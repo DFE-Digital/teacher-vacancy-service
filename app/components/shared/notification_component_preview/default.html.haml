@@ -1,0 +1,55 @@
+= form_for @preview_form, url: '/previews/shared/notification_component/default', html: { method: "get" }  do |f|
+
+  .govuk-grid-row
+    .govuk-grid-column-full
+
+      %a.govuk-link{ href: "/previews" }
+        = 'Main page'
+      %h2.govuk-heading-xl{ class: 'govuk-!-margin-bottom-4 govuk-!-margin-top-4' }
+        = 'Notification Component'
+
+      %p.govuk-body{ class: 'govuk-!-margin-bottom-8' }= 'displays a notification... blah blah blah blah blah blah blah blah'
+
+  .govuk-grid-row
+    .govuk-grid-column-one-quarter
+
+      %h2.govuk-heading-m= 'Options'
+
+      .govuk-form-group
+        = f.govuk_collection_select :variant,
+          @variants,
+          :id,
+          :name,
+          label: { text: "Variant" }
+
+      .govuk-form-group
+        = f.govuk_text_field :title,
+          width: 'three-quarters',
+          label: { text: 'Title' }
+
+        = f.govuk_text_field :body,
+          width: 'three-quarters',
+          label: { text: 'Body' }
+
+      .govuk-form-group
+        = f.govuk_check_box :background,
+          'true',
+          label: { text: 'with background color' },
+          link_errors: false
+
+        = f.govuk_check_box :dismiss,
+          'true',
+          label: { text: 'with dismiss CTA' },
+          link_errors: false
+
+      .govuk-form-group
+        = f.govuk_submit 'Update'
+
+    .govuk-grid-column-three-quarters
+      %h2.govuk-heading-m= 'Example'
+      = render(Shared::NotificationComponent.new(content: { title: @preview_form.title, body: @preview_form.body}, style: @preview_form.variant, background: @preview_form.background, dismiss: @preview_form.dismiss))
+
+      %h2.govuk-heading-m= 'HAML template'
+
+      %pre
+        %code= "render(Shared::NotificationComponent.new(\n\tcontent: {\n\t\ttitle: '#{@preview_form.title}',\n\t\tbody: '#{@preview_form.body}'\n\t},\n\tstyle: '#{@preview_form.variant}',\n\tbackground: #{@preview_form.background},\n\tdismiss: #{@preview_form.dismiss}\n))"

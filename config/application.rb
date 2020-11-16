@@ -78,5 +78,9 @@ module TeacherVacancyService
     config.algolia_index_prefix = ENV.fetch("ALGOLIA_INDEX_PREFIX", nil)
 
     config.geocoder_lookup = :default
+
+    config.view_component.preview_paths << "#{Rails.root}/app/components"
+    config.view_component.preview_route = "/previews"
+    config.view_component.preview_controller = "PreviewController"
   end
 end
