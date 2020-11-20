@@ -40,7 +40,6 @@ class PreviewController < ApplicationController
   end
 
 private
-
   def default_preview_layout
     ViewComponent::Base.default_preview_layout
   end
