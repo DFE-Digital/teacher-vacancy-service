@@ -1,71 +1,73 @@
 = form_for @preview_form, url: '/previews/shared/notification_component/default', html: { method: "get" }  do |f|
 
+  .govuk-grid-row{ class: 'govuk-!-margin-top-4' }
+    .govuk-width-container
+      .govuk-grid-column-full-width
+
+        %a.govuk-link{ href: "/previews" }
+          = 'Main page'
+        %h2.govuk-heading-xl{ class: 'govuk-!-margin-bottom-4 govuk-!-margin-top-4' }
+          = 'Notification Component'
+
+        %p.govuk-body{ class: 'govuk-!-margin-bottom-8' }= 'displays a notification description. Praesent ut lacus laoreet, pellentesque eros id, ultricies libero. Curabitur tempus tellus porttitor est luctus facilisis. Suspendisse et leo massa. Etiam ac lectus neque. Vivamus id magna nec libero blandit bibendum vel et nisi. In egestas ex at elit blandit, et porttitor enim ullamcorper. Nulla ut orci vel velit aliquam feugiat non et ligula. Phasellus vel velit ut nibh pulvinar sodales et vel nibh. Phasellus egestas ex porttitor, fringilla nulla at, vestibulum leo.'
+
   .govuk-grid-row
-    .govuk-grid-column-full
+    .govuk-width-container
+      .govuk-grid-column-one-quarter
 
-      %a.govuk-link{ href: "/previews" }
-        = 'Main page'
-      %h2.govuk-heading-xl{ class: 'govuk-!-margin-bottom-4 govuk-!-margin-top-4' }
-        = 'Notification Component'
+        %h2.govuk-heading-m= 'Options'
 
-      %p.govuk-body{ class: 'govuk-!-margin-bottom-8' }= 'displays a notification description. Praesent ut lacus laoreet, pellentesque eros id, ultricies libero. Curabitur tempus tellus porttitor est luctus facilisis. Suspendisse et leo massa. Etiam ac lectus neque. Vivamus id magna nec libero blandit bibendum vel et nisi. In egestas ex at elit blandit, et porttitor enim ullamcorper. Nulla ut orci vel velit aliquam feugiat non et ligula. Phasellus vel velit ut nibh pulvinar sodales et vel nibh. Phasellus egestas ex porttitor, fringilla nulla at, vestibulum leo.'
+        .govuk-form-group
+          = f.govuk_collection_select :variant,
+            @variants,
+            :id,
+            :name,
+            label: { text: "Variant" }
 
-  .govuk-grid-row
-    .govuk-grid-column-one-quarter
+        .govuk-form-group
+          = f.govuk_text_field :title,
+            width: 'three-quarters',
+            label: { text: 'Title' }
 
-      %h2.govuk-heading-m= 'Options'
+          = f.govuk_text_field :body,
+            width: 'three-quarters',
+            label: { text: 'Body' }
 
-      .govuk-form-group
-        = f.govuk_collection_select :variant,
-          @variants,
-          :id,
-          :name,
-          label: { text: "Variant" }
+        .govuk-form-group
+          = f.govuk_check_box :background,
+            'true',
+            label: { text: 'with background color' },
+            link_errors: false
 
-      .govuk-form-group
-        = f.govuk_text_field :title,
-          width: 'three-quarters',
-          label: { text: 'Title' }
+          = f.govuk_check_box :dismiss,
+            'true',
+            label: { text: 'with dismiss CTA' },
+            link_errors: false
 
-        = f.govuk_text_field :body,
-          width: 'three-quarters',
-          label: { text: 'Body' }
+        .govuk-form-group
+          = f.govuk_submit 'Update'
 
-      .govuk-form-group
-        = f.govuk_check_box :background,
-          'true',
-          label: { text: 'with background color' },
-          link_errors: false
+      .govuk-grid-column-three-quarters
+        %h2.govuk-heading-m= 'Example'
 
-        = f.govuk_check_box :dismiss,
-          'true',
-          label: { text: 'with dismiss CTA' },
-          link_errors: false
+        = render(Shared::NotificationComponent.new(content: { title: @preview_form.title, body: @preview_form.body}, style: @preview_form.variant, background: @preview_form.background, dismiss: @preview_form.dismiss))
 
-      .govuk-form-group
-        = f.govuk_submit 'Update'
+        .govuk-tabs{ data: { module: "govuk-tabs" } }
+          %h2.govuk-heading-m= 'Template'
 
-    .govuk-grid-column-three-quarters
-      %h2.govuk-heading-m= 'Example'
+          %ul.govuk-tabs__list
+            %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+              %a.govuk-tabs__tab{ href: "#past-day" }
+                = 'HAML'
 
-      = render(Shared::NotificationComponent.new(content: { title: @preview_form.title, body: @preview_form.body}, style: @preview_form.variant, background: @preview_form.background, dismiss: @preview_form.dismiss))
+            %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+              %a.govuk-tabs__tab{ href: "#past-day" }
+                = 'Slim'
 
-      .govuk-tabs{ data: { module: "govuk-tabs" } }
-        %h2.govuk-heading-m= 'Template'
-
-        %ul.govuk-tabs__list
-          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
-            %a.govuk-tabs__tab{ href: "#past-day" }
-              = 'HAML'
-
-          %li.govuk-tabs__list-item.govuk-tabs__list-item--selected
-            %a.govuk-tabs__tab{ href: "#past-day" }
-              = 'Slim'
-
-        .govuk-tabs__panel{ id: "past-day" }
-          %table.govuk-table
-            %tbody.govuk-table__body
-              %tr.govuk-table__row
-                %td.govuk-table__cell
-                  %pre
-                    %code= "render(Shared::NotificationComponent.new(\n\tcontent: {\n\t\ttitle: '#{@preview_form.title}',\n\t\tbody: '#{@preview_form.body}'\n\t},\n\tstyle: '#{@preview_form.variant}',\n\tbackground: #{@preview_form.background},\n\tdismiss: #{@preview_form.dismiss}\n))"
+          .govuk-tabs__panel{ id: "past-day" }
+            %table.govuk-table
+              %tbody.govuk-table__body
+                %tr.govuk-table__row
+                  %td.govuk-table__cell
+                    %pre
+                      %code= "render(Shared::NotificationComponent.new(\n\tcontent: {\n\t\ttitle: '#{@preview_form.title}',\n\t\tbody: '#{@preview_form.body}'\n\t},\n\tstyle: '#{@preview_form.variant}',\n\tbackground: #{@preview_form.background},\n\tdismiss: #{@preview_form.dismiss}\n))"
