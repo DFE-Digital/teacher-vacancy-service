@@ -2,6 +2,9 @@ class Organisation < ApplicationRecord
   has_many :organisation_vacancies, dependent: :destroy
   has_many :vacancies, through: :organisation_vacancies
 
+  has_many :dsi_memberships
+  has_many :publishers, through: :dsi_memberships
+
   scope :not_closed, -> { where.not(establishment_status: "Closed") }
   scope :schools, -> { where(type: "School") }
   scope :school_groups, -> { where(type: "SchoolGroup") }

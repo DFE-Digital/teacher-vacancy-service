@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_15_093446) do
+ActiveRecord::Schema.define(version: 2021_01_15_164522) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -72,6 +72,15 @@ ActiveRecord::Schema.define(version: 2021_01_15_093446) do
     t.datetime "updated_at", null: false
     t.uuid "vacancy_id"
     t.index ["vacancy_id"], name: "index_documents_on_vacancy_id"
+  end
+
+  create_table "dsi_memberships", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organisation_id", null: false
+    t.uuid "publisher_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["organisation_id"], name: "index_dsi_memberships_on_organisation_id"
+    t.index ["publisher_id"], name: "index_dsi_memberships_on_publisher_id"
   end
 
   create_table "emergency_login_keys", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
@@ -194,6 +203,7 @@ ActiveRecord::Schema.define(version: 2021_01_15_093446) do
     t.string "group_type"
     t.string "local_authority_within"
     t.string "establishment_status"
+    t.index ["local_authority_code"], name: "index_organisations_on_local_authority_code"
     t.index ["uid"], name: "index_organisations_on_uid"
     t.index ["urn"], name: "index_organisations_on_urn"
   end
@@ -339,6 +349,8 @@ ActiveRecord::Schema.define(version: 2021_01_15_093446) do
 
   add_foreign_key "account_feedbacks", "jobseekers"
   add_foreign_key "documents", "vacancies"
+  add_foreign_key "dsi_memberships", "organisations"
+  add_foreign_key "dsi_memberships", "publishers"
   add_foreign_key "emergency_login_keys", "publishers"
   add_foreign_key "job_alert_feedbacks", "subscriptions"
   add_foreign_key "publisher_preferences", "publishers"
