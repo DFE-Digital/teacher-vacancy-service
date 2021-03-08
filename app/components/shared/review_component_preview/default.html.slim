@@ -1,0 +1,25 @@
+.govuk-grid-column-three-quarters
+  .govuk-grid-row
+    h2.govuk-heading-l = 'Review Component'
+    p.govuk-body= 'Displays a review section link component. Praesent ut lacus laoreet, pellentesque eros id, ultricies libero. Curabitur tempus tellus porttitor est luctus facilisis. Suspendisse et leo massa. Etiam ac lectus neque. Vivamus id magna nec libero blandit bibendum vel et nisi. In egestas ex at elit blandit, et porttitor enim ullamcorper. Nulla ut orci vel velit aliquam feugiat non et ligula. Phasellus vel velit ut nibh pulvinar sodales et vel nibh. Phasellus egestas ex porttitor, fringilla nulla at, vestibulum leo.'
+
+  .govuk-grid-row
+    h2.govuk-heading-m= 'Example'
+
+    = render(Shared::ReviewComponent.new(id: "applying_for_the_job", title: "section title", edit_link: "/edit/link"))
+
+    .govuk-tabs data={ "module": "govuk-tabs" } 
+      h2.govuk-heading-m= 'Template'
+
+      ul.govuk-tabs__list
+        li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+          a.govuk-tabs__tab href="#past-day"
+            = 'Slim'
+
+      .govuk-tabs__panel id="past-day"
+        table.govuk-table
+          tbody.govuk-table__body
+            tr.govuk-table__row
+              td.govuk-table__cell
+                pre
+                  code= "render(Shared::ReviewComponent.new(\n\tcontent: {\n\t\ttitle: '#{@preview_form.title}',\n\t\tbody: '#{@preview_form.body}'\n\t},\n\tstyle: '#{@preview_form.variant}',\n\tbackground: #{@preview_form.background},\n\tdismiss: #{@preview_form.dismiss}\n))"

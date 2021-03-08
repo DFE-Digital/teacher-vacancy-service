@@ -7,12 +7,11 @@
   .govuk-grid-column-two-thirds
     h2.govuk-heading-l = t(".next_step.heading")
 
-    = render Shared::NotificationComponent.new style: "notice",
-      content: { title: t(".notice.title"), body: t(".notice.body") },
+    = render Shared::NotificationComponent.new variant: "notice",
+      title: t(".notice.title"), body: t(".notice.body"),
       background: true,
-      alert: "info",
-      dismiss: false,
-      html_attributes: {}
+      icon: true,
+      dismiss: false
 
     p = t(".next_step.school_communication", organisation: vacancy.parent_organisation.name, deadline: format_date(vacancy.expires_on))
     p = t(".next_step.shortlisted", organisation: vacancy.parent_organisation.name)

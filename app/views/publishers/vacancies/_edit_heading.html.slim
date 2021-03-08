@@ -1,4 +1,4 @@
 h2.govuk-heading-l = review_heading(@vacancy)
 
 - if new_attributes(@vacancy).any?
-  = render(Shared::NotificationComponent.new(content: { title: t("messages.jobs.new_attributes.heading"), body: t("messages.jobs.new_attributes.message") }, style: "notice", links: new_attributes(@vacancy)))
+  = render(Shared::NotificationComponent.new(title: t("messages.jobs.new_attributes.heading"), body: t("messages.jobs.new_attributes.message"), variant: "notice", links: new_attributes(@vacancy)))

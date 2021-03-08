@@ -1,33 +1,47 @@
-class Shared::NotificationComponent < ViewComponent::Base
-  def initialize(content:, style:,
+class Shared::NotificationComponent < GovukComponent::Base
+  def initialize(variant: "success",
                  links: nil,
+                 title: "",
+                 body: "",
                  dismiss: true,
                  background: false,
-                 alert: "warning",
-                 html_attributes: nil)
-    @content = content
-    @style = style
+                 icon: false,
+                 classes: [],
+                 html_attributes: {})
+
+    super(classes: classes, html_attributes: html_attributes)
+    @body = body
+    @title = title
+    @variant = variant
     @links = links
-    @dismiss = style == "danger" ? false : dismiss
+    @dismiss = variant == "danger" ? false : dismiss
     @background = background
-    @alert = %w[danger success].include?(style) ? false : alert
+    @icon = icon
     @html_attributes = html_attributes || default_html_attributes
   end
 
   def notification_classes
-    applied_class = "govuk-notification--#{@style}"
-    applied_class += " govuk-notification__background" if @background
-    applied_class += " icon icon--left icon--#{@alert}" if @alert
-    applied_class += " js-dismissible" if @dismiss
+    applied_class = "govuk-notification--#{@variant} "
+    applied_class += background_class if @background
+    applied_class += icon_class if @icon
+    applied_class += dismissable_class if @dismiss
     applied_class
   end
 
-  def render_title_and_body?
-    @content.is_a?(Hash) && @content[:body].present?
+  def background_class
+    "govuk-notification__background "
+  end
+
+  def icon_class
+    "icon icon--left icon--#{@variant} "
+  end
+
+  def dismissable_class
+    "js-dismissible"
   end
 
   def default_html_attributes
-    if @style == "empty"
+    if @variant == "empty"
       {}
     else
       { role: "alert", tabindex: "-1" }

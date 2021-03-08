@@ -1,2 +1,2 @@
 - flash.each do |style, message|
-  = render(Shared::NotificationComponent.new(content: message, style: style))
+  = render(Shared::NotificationComponent.new(body: message, variant: style))

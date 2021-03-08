@@ -3,7 +3,7 @@
 .govuk-grid-row
   .govuk-grid-column-two-thirds
     - if @reason_for_failing_sign_in
-      = render(Shared::NotificationComponent.new(content: { title: t("publishers.temp_login.choose_organisation.denial.title"), body: t("publishers.temp_login.choose_organisation.denial.#{@reason_for_failing_sign_in}_html", try_again: govuk_link_to("try again", new_publisher_session_path)) }, style: "notice", background: true, dismiss: false))
+      = render(Shared::NotificationComponent.new(title: t("publishers.temp_login.choose_organisation.denial.title"), body: t("publishers.temp_login.choose_organisation.denial.#{@reason_for_failing_sign_in}_html", try_again: govuk_link_to("try again", new_publisher_session_path)), variant: "notice", background: true, dismiss: false))
     - else
       h1.govuk-heading-l = t("publishers.temp_login.choose_organisation.heading")
 

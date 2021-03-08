@@ -1,0 +1,62 @@
+= form_for @preview_form, url: '/components/shared/notification_component/default', html: { method: "get" }  do |f|
+  
+  .govuk-grid-column-three-quarters
+
+    h1.govuk-heading-l = 'Notification Component'
+    p.govuk-body= 'Displays a notification.'
+
+    h2.govuk-heading-m= 'Options'
+    ul.govuk-list
+      li= "title, body, background, icon, dismiss"
+
+    h2.govuk-heading-m= 'Examples'
+
+    - @variants.each do | variant |
+      h3.govuk-heading-s = variant.title
+      p.govuk-body = variant.description
+      = render(Shared::NotificationComponent.new(icon: @preview_form.icon, title: @preview_form.title, body: @preview_form.body, variant: variant.id, background: @preview_form.background, dismiss: @preview_form.dismiss ))
+
+      .govuk-tabs data={ "module": "govuk-tabs" } 
+        ul.govuk-tabs__list
+          li.govuk-tabs__list-item.govuk-tabs__list-item--selected
+            a.govuk-tabs__tab href="#past-day"
+              = 'Slim template'
+
+        .govuk-tabs__panel id="past-day"
+          table.govuk-table
+            tbody.govuk-table__body
+              tr.govuk-table__row
+                td.govuk-table__cell
+                  pre
+                    code= "render(Shared::NotificationComponent.new(\nnotification: {\n\t\ttitle: '#{@preview_form.title}',\n\t\tbody: '#{@preview_form.body}'\n\t},\n\tstyle: '#{@preview_form.variant}',\n\tbackground: #{@preview_form.background},\n\tdismiss: #{@preview_form.dismiss}\n))"
+
+    h2.govuk-heading-m= 'Interactive'
+
+    .govuk-form-group
+      .govuk-grid-column-one-half
+        = f.govuk_text_field :title,
+          width: 'three-quarters',
+          label: { text: 'Title', hidden: true }
+
+        = f.govuk_text_field :body,
+          width: 'three-quarters',
+          label: { text: 'Body', hidden: true }
+
+      .govuk-grid-column-one-half
+        = f.govuk_check_box :background,
+          'true',
+          label: { text: 'background color' },
+          link_errors: false
+
+        = f.govuk_check_box :dismiss,
+          'true',
+          label: { text: 'dismiss CTA' },
+          link_errors: false
+
+        = f.govuk_check_box :icon,
+          'true',
+          label: { text: 'icon' },
+          link_errors: false
+
+    .govuk-form-group
+      = f.govuk_submit 'Update'

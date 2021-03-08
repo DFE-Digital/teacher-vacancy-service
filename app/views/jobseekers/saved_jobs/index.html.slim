@@ -40,7 +40,7 @@
                 = tag.div(govuk_link_to(t(".apply"), new_jobseekers_job_job_application_path(saved_job.vacancy.id))) if JobseekerApplicationsFeature.enabled? && saved_job.vacancy.apply_through_teaching_vacancies == "yes" && Vacancy.live.exists?(saved_job.vacancy.id)
                 = tag.div(button_to(t(".delete"), jobseekers_saved_job_path(saved_job.vacancy.id, saved_job, redirect_to_dashboard: true), method: :delete, class: "govuk-delete-link"))
         - else
-          = render(Shared::NotificationComponent.new(content: { title: t(".zero_saved_jobs_title"), body: t(".zero_saved_jobs_body_html", link_to: govuk_link_to(t(".link_find"), root_path)) }, style: "empty", dismiss: false, background: true, alert: false))
+          = render(Shared::NotificationComponent.new(title: t(".zero_saved_jobs_title"), body: t(".zero_saved_jobs_body_html", link_to: govuk_link_to(t(".link_find"), root_path)), variant: "empty", dismiss: false, background: true, icon: false))
 
   .govuk-grid-column-full
     = render(Jobseekers::AccountSurveyLinkComponent.new(origin: url_for))

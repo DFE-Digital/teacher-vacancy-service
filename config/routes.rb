@@ -170,6 +170,5 @@ Rails.application.routes.draw do
         constraints: ->(request) { SUBJECT_OPTIONS.map(&:first).include?(request.params[:subject]) },
         defaults: { pretty: :subject }
 
-  # match "*path", to: "errors#not_found", via: :all
-  # match "*path", to: "errors#not_found", via: :all
+  match "*path", to: "errors#not_found", via: :all
 end

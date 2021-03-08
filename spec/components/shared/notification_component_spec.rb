@@ -1,21 +1,26 @@
 require "rails_helper"
 
 RSpec.describe Shared::NotificationComponent, type: :component do
-  let(:content) { "This is content" }
-  let(:style) { "notice" }
+  let(:variant) { "notice" }
+  let(:icon) { false }
+  let(:body) { "This is content" }
   let(:links) { nil }
+  let(:title) { nil }
   let(:dismiss) { true }
   let(:background) { false }
-  let(:alert) { false }
+
+  let(:kwargs) {
+    { variant: variant,
+      icon: icon,
+      links: links,
+      dismiss: dismiss,
+      background: background,
+      title: title,
+      body: body }
+  }
+
   let!(:inline_component) do
-    render_inline(described_class.new(
-                    content: content,
-                    style: style,
-                    links: links,
-                    dismiss: dismiss,
-                    background: background,
-                    alert: alert,
-                  ))
+    render_inline(described_class.new(**kwargs))
   end
 
   describe "content" do
@@ -26,7 +31,8 @@ RSpec.describe Shared::NotificationComponent, type: :component do
     end
 
     context "when content is a hash" do
-      let(:content) { { title: "Title", body: "This is the body" } }
+      let(:title) { "Title" }
+      let(:body) { "This is the body" }
 
       it "renders the title" do
         expect(inline_component.css(".govuk-notification__title").to_html).to include("Title")
@@ -69,7 +75,7 @@ RSpec.describe Shared::NotificationComponent, type: :component do
       end
 
       context "when alert is true" do
-        let(:alert) { true }
+        let(:icon) { true }
 
         it "applies the icon class" do
           expect(inline_component.css(".icon")).to_not be_blank
@@ -84,8 +90,8 @@ RSpec.describe Shared::NotificationComponent, type: :component do
     end
 
     context "when style is success" do
-      let(:style) { "success" }
-      let(:alert) { true }
+      let(:variant) { "success" }
+      let(:icon) { true }
 
       it "applies correct class" do
         expect(inline_component.css(".govuk-notification--success")).to_not be_blank
@@ -97,8 +103,8 @@ RSpec.describe Shared::NotificationComponent, type: :component do
     end
 
     context "when style is danger" do
-      let(:style) { "danger" }
-      let(:alert) { true }
+      let(:variant) { "danger" }
+      let(:icon) { true }
 
       it "does not render the dismiss link" do
         expect(rendered_component).to_not include(I18n.t("buttons.dismiss"))
@@ -162,7 +168,7 @@ RSpec.describe Shared::NotificationComponent, type: :component do
       end
 
       context "when the style is empty" do
-        let(:style) { "empty" }
+        let(:variant) { "empty" }
 
         it "has no html_attributes" do
           expect(subject).not_to include('role="alert"')
@@ -173,15 +179,7 @@ RSpec.describe Shared::NotificationComponent, type: :component do
 
     context "when html attributes are specified" do
       let!(:inline_component) do
-        render_inline(described_class.new(
-                        content: content,
-                        style: style,
-                        links: links,
-                        dismiss: dismiss,
-                        background: background,
-                        alert: alert,
-                        html_attributes: { role: "fake-role" },
-                      ))
+        render_inline(described_class.new(**kwargs.merge(html_attributes: { role: "fake-role" })))
       end
 
       it "has the specified html_attributes and does not have the default role and tab-index" do
@@ -191,7 +189,7 @@ RSpec.describe Shared::NotificationComponent, type: :component do
       end
 
       context "when the style is empty" do
-        let(:style) { "empty" }
+        let(:variant) { "empty" }
 
         it "has the specified html_attributes and does not have the default role and tab-index" do
           expect(subject).not_to include('role="alert"')
@@ -201,4 +199,7 @@ RSpec.describe Shared::NotificationComponent, type: :component do
       end
     end
   end
+
+  it_behaves_like "a component that accepts custom classes"
+  it_behaves_like "a component that accepts custom HTML attributes"
 end

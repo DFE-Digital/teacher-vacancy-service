@@ -111,11 +111,11 @@ b {
 }
 
 pre {
-  background: #f4f4f4;
+  background: govuk-colour('light-grey');
   border: 1px solid #ddd;
-  border-left: 3px solid #f36d33;
-  color: #666;
-  page-break-inside: avoid;
+  border-left: 3px solid govuk-colour('red');
+  color: govuk-colour('dark-grey');
+  display: block;
   font-family: monospace;
   font-size: 15px;
   line-height: 1.6;
@@ -123,6 +123,6 @@ pre {
   max-width: 100%;
   overflow: auto;
   padding: 1em 1.5em;
-  display: block;
+  page-break-inside: avoid;
   word-wrap: break-word;
 }

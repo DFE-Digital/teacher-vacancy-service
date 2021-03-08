@@ -13,7 +13,7 @@
 
       .location-search = render "fields", f: f
 
-      = render(Shared::NotificationComponent.new(content: { body: t("subscriptions.info") }, style: "notice", background: true, dismiss: false, alert: "info", html_attributes: {}))
+      = render(Shared::NotificationComponent.new(body: t("subscriptions.info"), variant: "notice", background: true, dismiss: false, icon: true))
 
       = recaptcha
 

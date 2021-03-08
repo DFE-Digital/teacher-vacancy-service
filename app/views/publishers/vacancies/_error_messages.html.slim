@@ -1,2 +1,2 @@
 - if errors.any?
-  = render(Shared::NotificationComponent.new(content: { title: t("messages.jobs.action_required.heading"), body: t("messages.jobs.action_required.message") }, style: "danger", links: errors.to_hash))
+  = render(Shared::NotificationComponent.new(title: t("messages.jobs.action_required.heading"), body: t("messages.jobs.action_required.message"), variant: "danger", links: errors.to_hash))

@@ -33,7 +33,7 @@
         margin-left: -15px;
       }
       @include govuk-media-query($from: tablet) {
-        border-top: 1px solid $govuk-border-colour;
+        border-top: 1px solid govuk-colour("mid-grey");
       }
       @include govuk-media-query($from: desktop) {
         display: table;

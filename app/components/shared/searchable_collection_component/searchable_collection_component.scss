@@ -14,7 +14,7 @@
 
   &.searchable-collection-component--border {
     background-color: #fff;
-    border: 2px solid $govuk-border-colour;
+    border: 2px solid govuk-colour("mid-grey");
     padding: 0;
 
     .govuk-checkboxes__item,

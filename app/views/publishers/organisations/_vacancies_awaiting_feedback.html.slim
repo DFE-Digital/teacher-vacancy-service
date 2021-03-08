@@ -6,4 +6,4 @@
     - vacancies.each do |vacancy|
       = render "publishers/organisations/vacancy_awaiting_feedback", vacancy: vacancy, organisation: organisation
 - else
-  = render(Shared::NotificationComponent.new(content: { body: no_jobs_text }, style: "empty", links: nil, dismiss: false, background: true, alert: false))
+  = render(Shared::NotificationComponent.new(body: no_jobs_text, variant: "empty", links: nil, dismiss: false, background: true, icon: false))

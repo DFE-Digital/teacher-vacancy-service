@@ -63,7 +63,7 @@ html.govuk-template.app-html-class lang="en"
         - flash.each do |style, message|
           .govuk-main-wrapper__notification
             .govuk-width-container
-              = render(Shared::NotificationComponent.new(content: message, style: style))
+              = render(Shared::NotificationComponent.new(body: message, variant: style))
 
         .content-wrapper
           = yield

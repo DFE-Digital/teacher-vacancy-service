@@ -3,10 +3,10 @@
 .govuk-grid-row
   .govuk-grid-column-full
     - unless @feedback.relevant_to_user
-      = render Shared::NotificationComponent.new style: "notice",
-        content: t(".change_alert_text", link: govuk_link_to(t(".change_alert_link"), edit_subscription_path(@subscription.token))),
+      = render Shared::NotificationComponent.new variant: "notice",
+        body: t(".change_alert_text", link: govuk_link_to(t(".change_alert_link"), edit_subscription_path(@subscription.token))),
         background: true,
-        alert: "info",
+        icon: true,
         dismiss: false
 
   .govuk-grid-column-two-thirds

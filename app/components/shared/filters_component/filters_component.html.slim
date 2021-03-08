@@ -40,20 +40,36 @@
   .filters-component__submit
     = form.govuk_submit t("buttons.apply_filters"), classes: "govuk-!-margin-top-4 govuk-!-margin-bottom-2 filters-component__submit-button"
 
-  .filters-component__groups.govuk-accordion id="accordion-default" data-module="govuk-accordion"
+  = render GovukComponent::Accordion.new(id: "accordion-default") do |component|
     - items.each_with_index do |group, index|
-      .govuk-accordion__section.accordion-content__group.filters-component__groups-container
-        .govuk-accordion__section-header
-          h3.govuk-accordion__section-heading
-            span.govuk-accordion__section-button id="accordion-default-heading-#{index}"
-              = group[:title]
+      - component.slot(:section,
+        title: group[:title]) do
+          - tag.p(class: "govuk-body", id: "accordion-default-heading-#{index}") do
 
-        .govuk-accordion__section-content.filters-component__group-checkboxes id="accordion-default-content-#{index}" aria-labelledby="accordion-default-heading-#{index}" data-group=group[:key]
-          .searchable-collection-component.searchable-collection-component--border
-            = form.govuk_collection_check_boxes group[:attribute],
-              group[:options],
-              group[:value_method],
-              group[:text_method],
-              small: true,
-              legend: nil,
-              hint: nil
+            .govuk-accordion__section-content.filters-component__group-checkboxes id="accordion-default-content-#{index}" aria-labelledby="accordion-default-heading-#{index}" data-group=group[:key]
+              .searchable-collection-component.searchable-collection-component--border
+                = form.govuk_collection_check_boxes group[:attribute],
+                  group[:options],
+                  group[:value_method],
+                  group[:text_method],
+                  small: true,
+                  legend: nil,
+                  hint: nil
+
+  / .filters-component__groups.govuk-accordion id="accordion-default" data-module="govuk-accordion"
+  /   - items.each_with_index do |group, index|
+  /     .govuk-accordion__section.accordion-content__group.filters-component__groups-container
+  /       .govuk-accordion__section-header
+  /         h3.govuk-accordion__section-heading
+  /           span.govuk-accordion__section-button id="accordion-default-heading-#{index}"
+  /             = group[:title]
+
+  /       .govuk-accordion__section-content.filters-component__group-checkboxes id="accordion-default-content-#{index}" aria-labelledby="accordion-default-heading-#{index}" data-group=group[:key]
+  /         .searchable-collection-component.searchable-collection-component--border
+  /           = form.govuk_collection_check_boxes group[:attribute],
+  /             group[:options],
+  /             group[:value_method],
+  /             group[:text_method],
+  /             small: true,
+  /             legend: nil,
+  /             hint: nil

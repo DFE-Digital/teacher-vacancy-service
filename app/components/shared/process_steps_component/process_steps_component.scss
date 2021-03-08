@@ -3,8 +3,8 @@
 .process-steps-component {
   .process-steps-component-header {
     background: govuk-colour('light-grey', $legacy: 'grey-4');
-    border-bottom: solid 1px $govuk-border-colour;
-    border-top: solid 1px $govuk-border-colour;
+    border-bottom: solid 1px govuk-colour("mid-grey");
+    border-top: solid 1px govuk-colour("mid-grey");
     padding: 10px;
     position: relative;
     @include govuk-media-query($from: tablet) {
@@ -22,7 +22,7 @@
     @include govuk-font(24, $weight: bold); }
 
   .process-steps-component-related {
-    border-top: 3px solid $govuk-link-colour;
+    border-top: 3px solid govuk-colour("blue");
     margin-bottom: 30px;
   }
 
@@ -86,7 +86,7 @@
   .process-steps-component__button {
     background: none;
     border: 0;
-    color: $govuk-link-colour;
+    color: govuk-colour("blue");
     cursor: pointer;
     margin: 0;
 
@@ -96,7 +96,7 @@
   }
 
   .process-steps-component__header:hover .process-steps-component__button:not(:focus) {
-    color: $govuk-link-colour;
+    color: govuk-colour("blue");
   }
 
   // removes extra dotted outline from buttons in Firefox
@@ -125,7 +125,7 @@
     z-index: 1; // this and relative position stops focus outline underlap with border of accordion
 
     &:hover:not(:focus) {
-      color: $govuk-link-hover-colour;
+      color:  govuk-colour("dark-blue");
     }
 
     .process-steps-component--large & {
@@ -146,7 +146,7 @@
 
   .process-steps-component__step::after {
     background: #fff;
-    border-left: solid 2px $govuk-border-colour;
+    border-left: solid 2px govuk-colour("mid-grey");
     content: '';
     height: 100%;
     left: 0;
@@ -171,7 +171,7 @@
   }
 
   .process-steps-component__step:last-child::before {
-    border-bottom: solid 2px $govuk-border-colour;
+    border-bottom: solid 2px govuk-colour("mid-grey");
     bottom: 0;
     content: '';
     height: 0;
@@ -236,12 +236,12 @@
   }
 
   .process-steps-component__header:hover .process-steps-component__circle {
-    color: $govuk-link-colour;
+    color: govuk-colour("blue");
   }
 
   .process-steps-component__circle--number {
     @include govuk-font(16, $weight: bold);
-    border: solid 2px $govuk-border-colour;
+    border: solid 2px govuk-colour("mid-grey");
     line-height: 23px;
   }
 
@@ -344,7 +344,7 @@
 
   .process-steps-component__toggle-link {
     @include govuk-font(16);
-    color: $govuk-link-colour;
+    color: govuk-colour("blue");
     display: block;
     line-height: 1.2;
   }
@@ -502,7 +502,7 @@
 
   .process-steps-component__help::after {
     background: #fff;
-    border-left: dotted 2px $govuk-border-colour;
+    border-left: dotted 2px govuk-colour("mid-grey");
     content: '';
     height: 100%;
     height: calc(100% + 30px);
@@ -543,7 +543,7 @@
 
   .process-steps-component__substep::after {
     background: #fff;
-    border-left: solid 2px $govuk-border-colour;
+    border-left: solid 2px govuk-colour("mid-grey");
     content: '';
     height: 100%;
     left: 0;

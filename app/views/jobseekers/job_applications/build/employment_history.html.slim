@@ -14,7 +14,7 @@
       = render Jobseekers::JobApplications::DetailComponent.with_collection(job_application.employment_history.includes(:job_application).order(created_at: :desc), title_attribute: "job_title", info_to_display: employment_history_info)
       = govuk_link_to t("buttons.add_another_role"), new_jobseekers_job_application_build_detail_path(job_application, :employment_history), button: true, class: "govuk-button--secondary"
     - else
-      = render Shared::NotificationComponent.new(content: { title: t(".no_employment_history"), body: govuk_link_to(t("buttons.add_role"), new_jobseekers_job_application_build_detail_path(job_application, :employment_history), button: true, class: "govuk-button--secondary govuk-!-margin-bottom-0") }, style: "empty", dismiss: false, background: true, alert: false)
+      = render Shared::NotificationComponent.new(title: t(".no_employment_history"), body: govuk_link_to(t("buttons.add_role"), new_jobseekers_job_application_build_detail_path(job_application, :employment_history), button: true, class: "govuk-button--secondary govuk-!-margin-bottom-0"), variant: "empty", dismiss: false, background: true, icon: false)
 
     = form_for @form, url: wizard_path, method: :patch do |f|
       = f.govuk_error_summary

@@ -1,7 +1,7 @@
 @import 'base_component';
 
 .document-link-component {
-  border: 1px solid $govuk-border-colour;
+  border: 1px solid govuk-colour("mid-grey");
   list-style-type: none;
   margin-block-end: 1em;
   padding: govuk-spacing(3);

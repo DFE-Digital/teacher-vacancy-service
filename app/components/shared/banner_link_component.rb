@@ -13,6 +13,6 @@ class Shared::BannerLinkComponent < ViewComponent::Base
   def call
     button_to link_text, link_path,
               method: link_method, params: params,
-              class: "banner-link-component__button icon icon--left icon--#{icon_class}", id: link_id, form_class: "banner-link-component"
+              class: "banner-link-component__button govuk-body-s govuk-!-font-weight-bold icon icon--left icon--#{icon_class}", id: link_id, form_class: "banner-link-component"
   end
 end

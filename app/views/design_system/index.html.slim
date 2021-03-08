@@ -1,0 +1,6 @@
+.govuk-width-container
+  - @previews.each do |preview|
+    h3 = govuk_link_to preview.preview_name.titleize, preview_view_component_path(preview.preview_name)
+    ul.govuk-list
+      - preview.examples.each do |preview_example|
+        li = link_to preview_example, preview_view_component_path("#{preview.preview_name}/#{preview_example}")

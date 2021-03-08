@@ -27,7 +27,7 @@
 
       = recaptcha
 
-      = render(Shared::NotificationComponent.new(content: t("nqt_job_alerts.intro.unsubscribe"), style: "notice", background: true, alert: "info", dismiss: false, html_attributes: {}))
+      = render(Shared::NotificationComponent.new(body: t("nqt_job_alerts.intro.unsubscribe"), variant: "notice", background: true, icon: true, dismiss: false))
 
       = f.govuk_submit t("buttons.subscribe"), classes: "nqt-job-alert-subscribe-gtm govuk-!-padding-left-8 govuk-!-padding-right-8"
 

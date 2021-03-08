@@ -9,11 +9,6 @@
 
   .govuk-notification {
     margin-bottom: 0;
-
-    .dismiss-link {
-      display: block;
-      float: right;
-    }
   }
 }
 
@@ -31,8 +26,13 @@
   background-color: govuk-colour('white');
   background-position: 13px 23px;
 
+  .dismiss-link {
+    display: block;
+    float: right;
+  }
+
   &:focus {
-    outline: $govuk-focus-width solid $govuk-focus-colour;
+    outline: $govuk-focus-width solid govuk-colour("yellow");
   }
 
   &.icon--left .govuk-notification__content {
@@ -72,7 +72,7 @@
 
 
 .govuk-notification--empty {
-  border: 5px dashed $govuk-border-colour;
+  border: 5px dashed govuk-colour("mid-grey");
 }
 
 .govuk-notification--notice {
@@ -80,12 +80,7 @@
 }
 
 .govuk-notification--success {
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="%2300703c" width="25" height="25" viewBox="0 0 25 25"><path d="M25,6.2L8.7,23.2L0,14.1l4-4.2l4.7,4.9L21,2L25,6.2z" ></path></svg>');
-  background-position: top 20px left 15px;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
   border-color: govuk-colour('green');
-  padding-left: govuk-spacing(8);
 
   .govuk-notification__list a {
     color: govuk-colour('green');
@@ -93,12 +88,7 @@
 }
 
 .govuk-notification--danger {
-  background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" width="21" height="20" viewBox="0 0 21 20"><path fill-rule="evenodd" clip-rule="evenodd" d="M20.3423 9.85217C20.3423 15.2057 15.9389 19.5493 10.5114 19.5493C5.08403 19.5493 0.680542 15.2057 0.680542 9.85217C0.680542 4.4986 5.08403 0.155029 10.5114 0.155029C15.9389 0.155029 20.3423 4.4986 20.3423 9.85217ZM9.1855 3.47218L9.4223 11.6886H11.6164L11.8445 3.47218H9.1855ZM8.97469 15.0479C8.88707 14.8457 8.8429 14.6293 8.8429 14.3986C8.8429 14.1736 8.88707 13.9607 8.97469 13.7622C9.06231 13.5636 9.18397 13.3886 9.33893 13.2386C9.4939 13.0886 9.67348 12.97 9.87841 12.8836C10.0833 12.7972 10.3028 12.7536 10.5367 12.7536C10.7648 12.7536 10.9806 12.7972 11.1819 12.8836C11.3832 12.97 11.5606 13.0886 11.7127 13.2386C11.8647 13.3886 11.9849 13.5629 12.0726 13.7622C12.1602 13.9615 12.2043 14.1736 12.2043 14.3986C12.2043 14.6293 12.1602 14.8465 12.0726 15.0479C11.9849 15.2493 11.8647 15.4257 11.7127 15.5757C11.5606 15.7257 11.3839 15.8443 11.1819 15.9307C10.9798 16.0172 10.7648 16.0607 10.5367 16.0607C10.3028 16.0607 10.0826 16.0172 9.87841 15.9307C9.67421 15.8443 9.4939 15.7257 9.33893 15.5757C9.18397 15.4257 9.06231 15.25 8.97469 15.0479Z" ></path></svg>');
-  background-position: top 20px left 15px;
-  background-repeat: no-repeat;
-  background-size: 25px 25px;
   border-color: govuk-colour('red');
-  padding-left: govuk-spacing(8);
 
   .govuk-notification__list a {
     color: govuk-colour('red');

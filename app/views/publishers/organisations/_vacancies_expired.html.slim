@@ -14,4 +14,4 @@
         = tag.div(govuk_link_to(t("jobs.manage.copy_link_text"), vacancy.copy_path))
         = tag.div(button_to(t("jobs.manage.delete_link_text"), vacancy.delete_path, method: :delete, data: { confirm: t("jobs.manage.are_you_sure", job_title: vacancy.job_title) }, class: "govuk-delete-link"))
 - else
-  = render(Shared::NotificationComponent.new(content: { body: no_jobs_text }, style: "empty", links: nil, dismiss: false, background: true, alert: false))
+  = render(Shared::NotificationComponent.new(body: no_jobs_text, variant: "empty", links: nil, dismiss: false, background: true, icon: false))

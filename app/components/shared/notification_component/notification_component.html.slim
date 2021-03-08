@@ -2,13 +2,10 @@
   - if @dismiss
     = govuk_link_to(t("buttons.dismiss"), "#", class: "govuk-link--no-visited-state dismiss-link js-dismissible__link")
   .govuk-notification__content
-    - if render_title_and_body?
-      - if content[:title].present?
-        .govuk-notification__title = content[:title]
-      - if content[:body].present?
-        .govuk-notification__body == content[:body]
-    - else
-      .govuk-notification__body == content
+    - if @title.present?
+      .govuk-notification__title = @title
+    - if @body.present?
+      .govuk-notification__body == @body
 
   - if @links.present?
     ul.govuk-list.govuk-notification__list

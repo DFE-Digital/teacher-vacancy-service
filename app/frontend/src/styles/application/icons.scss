@@ -36,11 +36,13 @@
   background-image: url('../../images/svg/icon-document.svg');
 }
 
-.icon--info {
+.icon--info,
+.icon--notice {
   background-image: url('../../images/svg/icon-info.svg');
 }
 
-.icon--warning {
+.icon--warning,
+.icon--danger {
   background-image: url('../../images/svg/icon-warning.svg');
 }
 
@@ -59,4 +61,8 @@
 
 .icon--cross {
   background-image: url('../../images/svg/icon-cross.svg');
+}
+
+.icon--success {
+  background-image: url('../../images/svg/icon-success.svg');
 }

@@ -1,7 +1,7 @@
 @import 'base_component';
 
 .pill-link-component {
-  background-color: $govuk-link-colour;
+  background-color: govuk-colour("blue");
   background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="%23FFFFFF" width="11" height="17" viewBox="0 0 11 17"><path d="M0.199 14.1014L5.84 8.4997L0.199001 2.89802C-0.0663316 2.63454 -0.0663315 2.21214 0.199001 1.94865L1.96233 0.197612C2.22766 -0.0658711 2.65303 -0.065871 2.91836 0.197612L10.801 8.02532C11.0663 8.2888 11.0663 8.7112 10.801 8.97468L2.91836 16.8024C2.65303 17.0659 2.22766 17.0659 1.96233 16.8024L0.199 15.0513C-0.0663326 14.7879 -0.0663326 14.3655 0.199 14.102L0.199 14.1014Z"></path></svg>');
   background-position: top 14px right 10px;
   background-repeat: no-repeat;
@@ -18,14 +18,14 @@
   }
 
   &:hover {
-    background-color: $govuk-link-hover-colour;
+    background-color:  govuk-colour("dark-blue");
     outline: none;
   }
 
   &:focus {
-    background-color: $govuk-focus-colour;
+    background-color: govuk-colour("yellow");
     background-image: url('data:image/svg+xml;charset=UTF-8,<svg xmlns="http://www.w3.org/2000/svg" fill="%230b0c0c" width="11" height="17" viewBox="0 0 11 17"><path d="M0.199 14.1014L5.84 8.4997L0.199001 2.89802C-0.0663316 2.63454 -0.0663315 2.21214 0.199001 1.94865L1.96233 0.197612C2.22766 -0.0658711 2.65303 -0.065871 2.91836 0.197612L10.801 8.02532C11.0663 8.2888 11.0663 8.7112 10.801 8.97468L2.91836 16.8024C2.65303 17.0659 2.22766 17.0659 1.96233 16.8024L0.199 15.0513C-0.0663326 14.7879 -0.0663326 14.3655 0.199 14.102L0.199 14.1014Z"></path></svg>');
-    color: $govuk-focus-text-colour;
+    color: govuk-colour("black");
     outline: none;
   }
 }

@@ -56,7 +56,7 @@
   .govuk-link {
     border: none;
     background: none;
-    color: $govuk-link-colour;
+    color: govuk-colour("blue");
     font-size: 1rem;
     text-decoration: underline;
     padding: 0;
@@ -85,7 +85,7 @@
         background-position: top 5px left;
         background-repeat: no-repeat;
         background-size: 22px 22px;
-        border-bottom: 2px solid $govuk-border-colour;
+        border-bottom: 2px solid govuk-colour("mid-grey");
         padding-left: govuk-spacing(5);
       }
     }
@@ -95,7 +95,7 @@
         border: none;
       }
 
-      border-bottom: 2px solid $govuk-border-colour;
+      border-bottom: 2px solid govuk-colour("mid-grey");
       display: flex;
 
       .govuk-heading-s {
@@ -131,7 +131,7 @@
       @media only screen and (max-width: 640px) {
         @include govuk-font(24);
 
-        color: $govuk-link-colour;
+        color: govuk-colour("blue");
         cursor: pointer;
         font-weight: bold;
         margin: 0 govuk-spacing(1) govuk-spacing(2);
@@ -176,7 +176,7 @@
           }
 
           .fa-times {
-            color: $govuk-link-colour;
+            color: govuk-colour("blue");
             font-size: 80%;
             margin: 0 govuk-spacing(1);
           }
@@ -210,7 +210,7 @@
     }
 
     .filters-component__groups-container {
-      border-bottom: 1px solid $govuk-border-colour;
+      border-bottom: 1px solid govuk-colour("mid-grey");
     }
   }
 }

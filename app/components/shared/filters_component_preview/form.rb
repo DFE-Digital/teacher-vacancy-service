@@ -5,10 +5,10 @@ class Shared::FiltersComponentPreview::Form
 
   def initialize(params = {})
     preview_criteria = if params[:shared_filters_component_preview_form].present?
-      JSON.parse(params[:shared_filters_component_preview_form].to_json).symbolize_keys
-    else
-      {}
-    end
+                         JSON.parse(params[:shared_filters_component_preview_form].to_json).symbolize_keys
+                       else
+                         {}
+                       end
 
     # options
     @remove_buttons = preview_criteria[:remove_buttons] || false

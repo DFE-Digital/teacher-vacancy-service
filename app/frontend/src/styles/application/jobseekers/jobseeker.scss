@@ -6,7 +6,11 @@
     }
   }
 
-  &.jobseekers_subscriptions_index {
+  &.publishers_identifications_new,
+  &.jobseekers_saved_jobs_index,
+  &.jobseekers_accounts_show,
+  &[class*='jobseekers_job_applications_'],
+  &[class*='subscriptions_'] {
     .govuk-main-wrapper {
       background-color: govuk-colour('light-grey');
     }
