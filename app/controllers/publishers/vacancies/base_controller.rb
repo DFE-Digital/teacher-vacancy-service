@@ -1,6 +1,6 @@
 require "indexing"
 
-class Publishers::Vacancies::ApplicationController < Publishers::BaseController
+class Publishers::Vacancies::BaseController < Publishers::BaseController
   helper_method :process_steps, :step_current, :steps_adjust
 
   def steps_adjust

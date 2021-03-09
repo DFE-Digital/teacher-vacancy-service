@@ -1,4 +1,4 @@
-class Publishers::Vacancies::VacancyPublisherFeedbacksController < Publishers::Vacancies::ApplicationController
+class Publishers::Vacancies::VacancyPublisherFeedbacksController < Publishers::Vacancies::BaseController
   before_action :set_vacancy, only: %i[new create]
 
   include FeedbackEventConcerns

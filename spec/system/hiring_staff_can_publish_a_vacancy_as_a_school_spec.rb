@@ -989,7 +989,7 @@ RSpec.describe "Creating a vacancy" do
           vacancy = create(:vacancy, :draft, publish_on: Date.current)
           vacancy.organisation_vacancies.create(organisation: school)
 
-          expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+          expect_any_instance_of(Publishers::Vacancies::BaseController)
             .to receive(:update_google_index).with(vacancy)
 
           visit organisation_job_review_path(vacancy.id)

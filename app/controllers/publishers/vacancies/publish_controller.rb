@@ -1,4 +1,4 @@
-class Publishers::Vacancies::PublishController < Publishers::Vacancies::ApplicationController
+class Publishers::Vacancies::PublishController < Publishers::Vacancies::BaseController
   before_action :set_vacancy
 
   def create

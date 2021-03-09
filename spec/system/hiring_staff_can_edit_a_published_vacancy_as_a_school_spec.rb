@@ -127,7 +127,7 @@ RSpec.describe "Hiring staff can edit a vacancy" do
       end
 
       scenario "notifies the Google index service" do
-        expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+        expect_any_instance_of(Publishers::Vacancies::BaseController)
           .to receive(:update_google_index).with(vacancy)
 
         visit edit_organisation_job_path(vacancy.id)
@@ -168,7 +168,7 @@ RSpec.describe "Hiring staff can edit a vacancy" do
       end
 
       scenario "adds a job to update the Google index in the queue" do
-        expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+        expect_any_instance_of(Publishers::Vacancies::BaseController)
           .to receive(:update_google_index).with(vacancy)
 
         visit edit_organisation_job_path(vacancy.id)
@@ -234,7 +234,7 @@ RSpec.describe "Hiring staff can edit a vacancy" do
       end
 
       scenario "adds a job to update the Google index in the queue" do
-        expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+        expect_any_instance_of(Publishers::Vacancies::BaseController)
           .to receive(:update_google_index).with(vacancy)
 
         visit edit_organisation_job_path(vacancy.id)
@@ -352,7 +352,7 @@ RSpec.describe "Hiring staff can edit a vacancy" do
       end
 
       scenario "adds a job to update the Google index in the queue" do
-        expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+        expect_any_instance_of(Publishers::Vacancies::BaseController)
           .to receive(:update_google_index).with(vacancy)
 
         visit edit_organisation_job_path(vacancy.id)
@@ -392,7 +392,7 @@ RSpec.describe "Hiring staff can edit a vacancy" do
       end
 
       scenario "adds a job to update the Google index in the queue" do
-        expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+        expect_any_instance_of(Publishers::Vacancies::BaseController)
           .to receive(:update_google_index).with(vacancy)
 
         visit edit_organisation_job_path(vacancy.id)

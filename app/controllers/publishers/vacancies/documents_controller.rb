@@ -1,6 +1,6 @@
 require "google/apis/drive_v3"
 
-class Publishers::Vacancies::DocumentsController < Publishers::Vacancies::ApplicationController
+class Publishers::Vacancies::DocumentsController < Publishers::Vacancies::BaseController
   include Publishers::Wizardable
 
   CONTENT_TYPES_ALLOWED = %w[ application/pdf

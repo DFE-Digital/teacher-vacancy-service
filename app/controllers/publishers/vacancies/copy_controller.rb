@@ -1,4 +1,4 @@
-class Publishers::Vacancies::CopyController < Publishers::Vacancies::ApplicationController
+class Publishers::Vacancies::CopyController < Publishers::Vacancies::BaseController
   before_action :set_vacancy
   before_action :set_up_copy_form, only: %i[create]
 

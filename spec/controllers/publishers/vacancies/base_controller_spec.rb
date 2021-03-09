@@ -1,6 +1,6 @@
 require "rails_helper"
 
-RSpec.describe Publishers::Vacancies::ApplicationController, type: :controller do
+RSpec.describe Publishers::Vacancies::BaseController, type: :controller do
   describe "#update_google_index" do
     let!(:vacancy) { create(:vacancy) }
 

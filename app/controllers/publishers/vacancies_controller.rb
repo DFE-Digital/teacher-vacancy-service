@@ -1,4 +1,4 @@
-class Publishers::VacanciesController < Publishers::Vacancies::ApplicationController
+class Publishers::VacanciesController < Publishers::Vacancies::BaseController
   include Publishers::Wizardable
 
   before_action :set_vacancy, only: %i[destroy edit preview review show summary]

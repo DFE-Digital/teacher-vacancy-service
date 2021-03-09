@@ -38,7 +38,7 @@ RSpec.describe "School deleting vacancies" do
   end
 
   scenario "Notifies the Google index service" do
-    expect_any_instance_of(Publishers::Vacancies::ApplicationController)
+    expect_any_instance_of(Publishers::Vacancies::BaseController)
       .to receive(:remove_google_index).with(vacancy)
 
     delete_vacancy(school, vacancy.id)
@@ -59,7 +59,7 @@ RSpec.describe "School deleting vacancies" do
     # to wrap the vacancy, instead of creating its own new vacancy object.
     # We need to use a `vacancy` object created in the test so that we can stub out the method
     # Vacancy#delete_documents, which otherwise will attempt HTTP connections.
-    allow_any_instance_of(Publishers::Vacancies::ApplicationController).to receive_message_chain(
+    allow_any_instance_of(Publishers::Vacancies::BaseController).to receive_message_chain(
       :current_organisation, :all_vacancies, :find
     ).and_return(vacancy)
     allow(vacancy).to receive(:delete_documents).and_return(nil)

@@ -1,4 +1,4 @@
-class Publishers::Vacancies::StatisticsController < Publishers::Vacancies::ApplicationController
+class Publishers::Vacancies::StatisticsController < Publishers::Vacancies::BaseController
   before_action :set_vacancy
 
   def update
