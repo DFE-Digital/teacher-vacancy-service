@@ -17,11 +17,22 @@ groups:
 
 - name: CPU-usage
   rules:
-  - alert: ProdCPUHigh
-    expr: avg by ( app ) (cpu{app=~"teaching-vacancies-production|teaching-vacancies-worker-production"}) > 60
+  - alert: ProdAppCPUHigh
+    expr: avg by ( app ) (cpu{app=~"teaching-vacancies-production"}) > 60
     for: 5m
     annotations:
       summary: App CPU usage high
+      description: "CPU usage at least 60% for more than 5 minutes (current value: {{ $value }})"
+      runbook: https://github.com/DFE-Digital/teaching-vacancies/tree/master/documentation/alert-runbook.md#ProdCPUHigh
+      dashboard: https://grafana-teaching-vacancies.london.cloudapps.digital/d/6Ac4lUWGk/teaching-vacancies-production?orgId=1&refresh=5s
+    labels:
+      environment: production
+      severity: high
+  - alert: ProdWorkerCPUHigh
+    expr: avg by ( app ) (cpu{app=~"teaching-vacancies-worker-production"}) > 75
+    for: 5m
+    annotations:
+      summary: Worker CPU usage high
       description: "CPU usage at least 60% for more than 5 minutes (current value: {{ $value }})"
       runbook: https://github.com/DFE-Digital/teaching-vacancies/tree/master/documentation/alert-runbook.md#ProdCPUHigh
       dashboard: https://grafana-teaching-vacancies.london.cloudapps.digital/d/6Ac4lUWGk/teaching-vacancies-production?orgId=1&refresh=5s
