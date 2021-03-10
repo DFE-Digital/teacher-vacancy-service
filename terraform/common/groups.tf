@@ -13,6 +13,12 @@ resource "aws_iam_group" "developers" {
   path = "/${local.service_name}/"
 }
 
+resource "aws_iam_group" "deployers" {
+  name = "Deployers"
+  path = "/${local.service_name}/"
+}
+
+
 data "aws_iam_policy_document" "manage_own_security" {
 
   statement {
@@ -147,6 +153,17 @@ data "aws_iam_policy_document" "assume_role_if_mfa_present" {
     }
   }
 }
+data "aws_iam_policy_document" "assume_role_no_mfa" {
+
+  statement {
+    actions = ["sts:AssumeRole"]
+
+    principals {
+      type        = "AWS"
+      identifiers = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"]
+    }
+  }
+}
 resource "aws_iam_role" "administrator" {
   name               = "Administrator"
   assume_role_policy = data.aws_iam_policy_document.assume_role_if_mfa_present.json
@@ -269,10 +286,44 @@ resource "aws_iam_policy" "parameter_store" {
   policy = data.aws_iam_policy_document.parameter_store.json
 }
 
-
 resource "aws_iam_role_policy_attachment" "secreteditor_role_policies" {
   role       = aws_iam_role.secreteditor.name
   policy_arn = aws_iam_policy.parameter_store.arn
+}
+
+# Deployers group, deployments role - no MFA required
+
+resource "aws_iam_role" "deployments" {
+  name               = "Deployments"
+  assume_role_policy = data.aws_iam_policy_document.assume_role_no_mfa.json
+}
+
+data "aws_iam_policy_document" "allow_assume_role_deployments" {
+  statement {
+    actions   = ["sts:AssumeRole"]
+    resources = ["arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/${aws_iam_role.deployments.name}"]
+  }
+}
+
+resource "aws_iam_policy" "allow_assume_role_deployments" {
+  name        = "allow_assume_role_deployments"
+  description = "Allow assuming deployments role"
+  policy      = data.aws_iam_policy_document.allow_assume_role_deployments.json
+}
+
+resource "aws_iam_role_policy_attachment" "deployments_role_policies" {
+  for_each = toset([
+    aws_iam_policy.edit_terraform_state.arn,
+    aws_iam_policy.read_ssm_parameters.arn,
+    aws_iam_policy.cloudwatch.arn,
+    aws_iam_policy.acm.arn,
+    aws_iam_policy.cloudfront.arn,
+    aws_iam_policy.db_backups_in_s3_fullaccess.arn,
+    aws_iam_policy.offline_site_full_access.arn
+  ])
+
+  role       = aws_iam_role.deployments.name
+  policy_arn = each.value
 }
 
 # Allow group members to manage own MFA, access keys, passwords
@@ -286,20 +337,24 @@ resource "aws_iam_group_policy_attachment" "permit_billingmanagers_group_manage_
   group      = aws_iam_group.billingmanagers.name
   policy_arn = aws_iam_policy.manage_own_security.arn
 }
+
 resource "aws_iam_group_policy_attachment" "permit_developers_group_manage_own_security" {
   group      = aws_iam_group.developers.name
   policy_arn = aws_iam_policy.manage_own_security.arn
 }
+
 # Allow group members to assume roles
 
 resource "aws_iam_group_policy_attachment" "permit_administrators_group_assume_role_administrator" {
   group      = aws_iam_group.administrators.name
   policy_arn = aws_iam_policy.allow_assume_role_administrator.arn
 }
+
 resource "aws_iam_group_policy_attachment" "permit_billingmanagers_group_assume_role_billingmanager" {
   group      = aws_iam_group.billingmanagers.name
   policy_arn = aws_iam_policy.allow_assume_role_billingmanager.arn
 }
+
 resource "aws_iam_group_policy_attachment" "permit_developers_group_assume_role_readonly" {
   group      = aws_iam_group.developers.name
   policy_arn = aws_iam_policy.allow_assume_role_readonly.arn
@@ -308,4 +363,9 @@ resource "aws_iam_group_policy_attachment" "permit_developers_group_assume_role_
 resource "aws_iam_group_policy_attachment" "permit_developers_group_assume_role_secreteditor" {
   group      = aws_iam_group.developers.name
   policy_arn = aws_iam_policy.allow_assume_role_secreteditor.arn
+}
+
+resource "aws_iam_group_policy_attachment" "permit_deployers_group_assume_role_deployments" {
+  group      = aws_iam_group.deployers.name
+  policy_arn = aws_iam_policy.allow_assume_role_deployments.arn
 }
