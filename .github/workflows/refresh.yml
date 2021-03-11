@@ -37,8 +37,7 @@ jobs:
           TF_VAR_paas_user: ${{ secrets.CF_USERNAME }}
           TF_VAR_paas_password: ${{ secrets.CF_PASSWORD }}
         run: |
-          terraform init -reconfigure -input=false
-          terraform workspace select ${{ github.event.inputs.environment }}
+          terraform init -reconfigure -input=false -backend-config="key=${{ github.event.inputs.environment }}/app.tfstate"
           echo ::set-output name=tag::$(terraform output docker_tag)
         working-directory: terraform/app
 

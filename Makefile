@@ -34,26 +34,29 @@ local: ## local # Same values as the deployed dev environment, adapted for local
 .PHONY: dev
 dev: ## dev
 		$(eval env=dev)
-		$(eval var_file=dev)
+		$(eval var_file=$(env))
+		$(eval backend_config=-backend-config="key=$(env)/app.tfstate")
 
 .PHONY: review
 review: ## review # Requires `pr_id=NNNN`
 		$(if $(pr_id), , $(error Missing environment variable "pr_id"))
 		$(eval env=review-pr-$(pr_id))
-		$(eval export TF_VAR_environment=review-pr-$(pr_id))
+		$(eval export TF_VAR_environment=$(env))
 		$(eval var_file=review)
-		$(eval backend_config=-backend-config="workspace_key_prefix=review:")
+		$(eval backend_config=-backend-config="key=review/$(env).tfstate")
 
 .PHONY: staging
 staging: ## staging
 		$(eval env=staging)
-		$(eval var_file=staging)
+		$(eval var_file=$(env))
+		$(eval backend_config=-backend-config="key=$(env)/app.tfstate")
 
 .PHONY: production
 production: ## production # Requires `CONFIRM_PRODUCTION=true`
 		$(if $(CONFIRM_PRODUCTION), , $(error Can only run with CONFIRM_PRODUCTION))
 		$(eval env=production)
-		$(eval var_file=production)
+		$(eval var_file=$(env))
+		$(eval backend_config=-backend-config="key=$(env)/app.tfstate")
 
 ##@ Docker - build, tag, and push an image from local code. Requires Docker CLI
 
@@ -95,8 +98,7 @@ check-docker-tag:
 terraform-app-init:
 		$(if $(passcode), , $(error Missing environment variable "passcode"))
 		$(eval export TF_VAR_paas_sso_passcode=$(passcode))
-		cd terraform/app && terraform init -reconfigure -input=false $(backend_config)
-		cd terraform/app && terraform workspace select $(env) || terraform workspace new $(env)
+		cd terraform/app && rm -f .terraform.lock.hcl && terraform init -reconfigure -input=false $(backend_config)
 
 .PHONY: terraform-app-plan
 terraform-app-plan: terraform-app-init check-docker-tag ## make passcode=MyPasscode tag=dev-08406f04dd9eadb7df6fcda5213be880d7df37ed-20201022090714 <env> terraform-app-plan
@@ -110,13 +112,12 @@ terraform-app-apply: terraform-app-init check-docker-tag ## make passcode=MyPass
 terraform-app-destroy-review: terraform-app-init ## make passcode=MyPasscode CONFIRM_DESTROY=true pr_id=2086 review terraform-app-destroy-review
 		$(if $(CONFIRM_DESTROY), , $(error Can only run with CONFIRM_DESTROY))
 		cd terraform/app && terraform destroy -var-file ../workspace-variables/review.tfvars -auto-approve
-		cd terraform/app && terraform workspace select default && terraform workspace delete $(env)
 
 ##@ terraform/common code. Requires privileged IAM account to run
 
 .PHONY: terraform-common-init
 terraform-common-init:
-		cd terraform/common && terraform init -reconfigure -input=false
+		cd terraform/common && rm -f .terraform.lock.hcl && terraform init -reconfigure -input=false
 
 .PHONY: terraform-common-plan
 terraform-common-plan: terraform-common-init ## make terraform-common-plan
@@ -132,7 +133,7 @@ terraform-common-apply: terraform-common-init ## make terraform-common-apply
 terraform-monitoring-init:
 		$(if $(passcode), , $(error Missing environment variable "passcode"))
 		$(eval export TF_VAR_paas_sso_passcode=$(passcode))
-		cd terraform/monitoring && terraform init -upgrade=true -reconfigure -input=false
+		cd terraform/monitoring && rm -f .terraform.lock.hcl && terraform init -upgrade=true -reconfigure -input=false
 
 .PHONY: terraform-monitoring-plan
 terraform-monitoring-plan: terraform-monitoring-init ## make passcode=MyPasscode terraform-monitoring-plan

@@ -30,8 +30,8 @@ https://www.terraform.io/docs/state/purpose.html
 terraform {
 
   backend "s3" {
-    bucket  = "terraform-state-002"
-    key     = "tvs/terraform.tfstate" # When using workspaces this changes to ':env/{terraform.workspace}/tvs/terraform.tfstate'
+    bucket  = "530003481352-terraform-state"
+    # When run interactively, should prompt for key. To specify environments, we pass to terraform init -backend-config="key=dev/app.tfstate"
     region  = "eu-west-2"
     encrypt = "true"
   }

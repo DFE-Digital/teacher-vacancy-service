@@ -47,7 +47,7 @@ jobs:
     - name: Set environment variables for review
       if: startsWith(github.event.inputs.environment, 'review')
       run: |
-        BACKEND_CONFIG=-backend-config="workspace_key_prefix=review:"
+        BACKEND_CONFIG=-backend-config="key=review/${{ github.event.inputs.environment }}.tfstate"
         PARAMETER_STORE_ENVIRONMENT=dev
         TF_VAR_environment=${{ github.event.inputs.environment }}
         VAR_FILE=review
@@ -59,6 +59,7 @@ jobs:
     - name: Set environment variables for non-review environments
       if: startsWith(github.event.inputs.environment, 'review') != true
       run: |
+        BACKEND_CONFIG=-backend-config="key=${{ github.event.inputs.environment }}/app.tfstate"
         PARAMETER_STORE_ENVIRONMENT=${{ github.event.inputs.environment }}
         VAR_FILE=${{ github.event.inputs.environment }}
         echo "PARAMETER_STORE_ENVIRONMENT=${PARAMETER_STORE_ENVIRONMENT}" >> $GITHUB_ENV
@@ -89,6 +90,5 @@ jobs:
       run: |
         export TF_VAR_paas_app_docker_image=${{ env.DOCKERHUB_REPOSITORY }}:${{ github.event.inputs.tag }}
         terraform init -reconfigure -input=false ${{ env.BACKEND_CONFIG }}
-        terraform workspace select ${{ github.event.inputs.environment }} || terraform workspace new ${{ github.event.inputs.environment }}
         terraform apply -var-file ../workspace-variables/${{ env.VAR_FILE }}.tfvars -auto-approve -input=false
       working-directory: terraform/app

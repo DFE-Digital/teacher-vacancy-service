@@ -5,8 +5,8 @@ https://www.terraform.io/docs/state/purpose.html
 terraform {
 
   backend "s3" {
-    bucket  = "terraform-state-002"
-    key     = "tvs/terraform-monitoring.tfstate" # When using workspaces this changes to ':env/{terraform.workspace}/tvs/terraform.tfstate'
+    bucket  = "530003481352-terraform-state"
+    key     = "production/monitoring.tfstate" # Currently we only monitor production, but the naming convention should support monitoring other environments
     region  = "eu-west-2"
     encrypt = "true"
   }
