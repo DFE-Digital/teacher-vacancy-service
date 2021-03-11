@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_114119) do
+ActiveRecord::Schema.define(version: 2021_03_11_145934) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -137,6 +137,13 @@ ActiveRecord::Schema.define(version: 2021_03_02_114119) do
     t.datetime "updated_at", null: false
     t.jsonb "buffers"
     t.jsonb "polygons"
+  end
+
+  create_table "organisation_publishers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.uuid "organisation_id"
+    t.uuid "publisher_id"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
   end
 
   create_table "organisation_vacancies", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
