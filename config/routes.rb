@@ -137,7 +137,11 @@ Rails.application.routes.draw do
       resource :copy, only: %i[new create], controller: "publishers/vacancies/copy"
 
       constraints(-> { JobseekerApplicationsFeature.enabled? }) do
-        resources :job_applications, only: %i[show], controller: "publishers/vacancies/job_applications"
+        resources :job_applications, only: %i[show], controller: "publishers/vacancies/job_applications" do
+          get :shortlist
+          get :reject
+          post :update_status
+        end
       end
     end
 

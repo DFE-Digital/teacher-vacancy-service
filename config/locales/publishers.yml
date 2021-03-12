@@ -150,10 +150,21 @@ en:
         success_html: >-
           %{job_title} has been <span class="govuk-!-font-weight-bold delete-listing-success-gtm">deleted</span>
       job_applications:
+        reject:
+          alert: The candidate will be sent an email telling them that their application has not been successful.
+          heading: Reject applicant
+          page_title: Reject applicant
+        shortlist:
+          alert: The candidate will be sent an email telling them that they have been shortlisted.
+          heading: Shortlist applicant
+          page_title: Shortlist applicant
         show:
           page_title: Application
           status_heading: Applicant status
           timeline: Timeline
+        update_status:
+          unsuccessful: "%{name} has been sent an email telling them their application has not been successful"
+          shortlisted: "%{name} has been sent an email telling them that they have been shortlisted"
       show:
         notice: You can only view published jobs
       summary:

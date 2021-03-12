@@ -25,7 +25,7 @@ en:
     hide_filters: Hide filters
     make_changes: Make changes
     preview_job_listing: Preview job listing
-    reject: Reject
+    reject: Confirm rejection
     resend_email: Resend request
     save_and_return_later: Save and return later
     save_as_draft: Save as draft
@@ -116,6 +116,14 @@ en:
 
       publishers_organisation_form:
         description: Jobseekers will see this description of the %{organisation_type} in the job listing
+
+      publishers_job_application_update_status_form:
+        further_instructions: >-
+          Do you want to give the candidate any further information? For example, when they will be invited for an
+          interview
+        rejection_reasons: >-
+          Give the candidate a brief explanation of why they haven't been successful. This can help them to understand
+          what they need to improve or develop for their future in teaching.
 
       publishers_job_listing_applying_for_the_job_form:
         application_link: Leave this blank unless candidates can apply directly on the school or council website
@@ -321,6 +329,10 @@ en:
       publishers_organisation_form:
         description: Description of %{organisation_type}
         website: '%{organisation_type} website'
+
+      publishers_job_application_update_status_form:
+        further_instructions: Any further instructions?
+        rejection_reasons: What are the reasons for the rejection?
 
       publishers_job_listing_applying_for_the_job_form:
         application_link: Link to online application

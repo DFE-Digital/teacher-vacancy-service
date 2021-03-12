@@ -1,0 +1,19 @@
+- content_for :page_title_prefix, t(".page_title")
+
+.govuk-grid-row
+  .govuk-grid-column-two-thirds
+    h2.govuk-heading-m class="govuk-!-margin-bottom-0"
+      = "#{job_application.application_data['first_name']} #{job_application.application_data['last_name']}"
+    .govuk-caption-l
+      = t("jobseekers.job_applications.heading_component.caption",
+          job_title: vacancy.job_title, organisation_name: vacancy.parent_organisation_name)
+
+    h1.govuk-heading-xl class="govuk-!-margin-top-5 govuk-!-margin-bottom-5" = t(".heading")
+
+    = render Shared::NotificationComponent.new style: "danger", content: t(".alert"), alert: "info", dismiss: false
+
+    = form_for form, url: organisation_job_job_application_update_status_path(vacancy.id, job_application.id) do |f|
+      = f.govuk_text_area :further_instructions, label: { size: "s" }, rows: 10, form_group: { classes: "optional-field" }
+      = f.govuk_submit t("buttons.shortlist")
+
+    = govuk_link_to t("buttons.cancel"), organisation_job_job_application_path(vacancy.id, job_application.id)
