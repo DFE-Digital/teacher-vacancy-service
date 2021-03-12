@@ -22,18 +22,23 @@
 
 .govuk-grid-row
   .govuk-grid-column-two-thirds
-    - if job_application.submitted?
-      = govuk_link_to t("buttons.shortlist"), organisation_job_job_application_shortlist_path(vacancy.id, job_application.id), button: true, class: "govuk-!-margin-right-3"
-
-    - if job_application.submitted? || job_application.shortlisted?
-      = govuk_link_to t("buttons.reject"), organisation_job_job_application_reject_path(vacancy.id, job_application.id), button: true, class: "govuk-button--warning govuk-!-margin-right-3"
-
-    = govuk_link_to t("buttons.download_application"), "#", button: true, class: "govuk-button--secondary"
+    .job-application-actions
+      - if job_application.submitted?
+        = govuk_link_to t("buttons.shortlist"), organisation_job_job_application_shortlist_path(vacancy.id, job_application.id), button: true, class: "govuk-!-margin-right-3"
+      - if job_application.submitted? || job_application.shortlisted?
+        = govuk_link_to t("buttons.reject"), organisation_job_job_application_reject_path(vacancy.id, job_application.id), button: true, class: "govuk-button--warning govuk-!-margin-right-3"
+      = govuk_link_to t("buttons.download_application"), "#", button: true, class: "govuk-button--secondary"
 
   .govuk-grid-column-one-third
     .account-sidebar
       h2.account-sidebar__heading = t(".timeline")
 
     = render Shared::TimelineComponent.new do |timeline|
-      - timeline.date(key: t("jobseekers.job_applications.steps.application_submitted"),
+      - if job_application.unsuccessful?
+        - timeline.date(key: t("jobseekers.job_applications.status_timestamps.rejected"),
+                        value: format_date(job_application.unsuccessful_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.unsuccessful_at))
+      - elsif job_application.shortlisted?
+        - timeline.date(key: t("jobseekers.job_applications.status_timestamps.shortlisted"),
+                        value: format_date(job_application.shortlisted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.shortlisted_at))
+      - timeline.date(key: t("jobseekers.job_applications.status_timestamps.submitted"),
                       value: format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))

@@ -49,5 +49,11 @@
       h2.account-sidebar__heading = t(".timeline")
 
     = render Shared::TimelineComponent.new do |timeline|
-      - timeline.date(key: t("jobseekers.job_applications.steps.application_submitted"),
+      - if job_application.unsuccessful?
+        - timeline.date(key: t("jobseekers.job_applications.status_timestamps.unsuccessful"),
+                        value: format_date(job_application.unsuccessful_at.to_date))
+      - elsif job_application.shortlisted?
+        - timeline.date(key: t("jobseekers.job_applications.status_timestamps.shortlisted"),
+                        value: format_date(job_application.shortlisted_at.to_date))
+      - timeline.date(key: t("jobseekers.job_applications.status_timestamps.submitted"),
                       value: format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))

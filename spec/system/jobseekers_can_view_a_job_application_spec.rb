@@ -19,7 +19,7 @@ RSpec.describe "Jobseekers can view a job application" do
 
     expect(show_page.banner.status.text).to eq(job_application.status)
 
-    expect(show_page.timeline.dates(text: "Application submitted").first.text)
+    expect(show_page.timeline.dates(text: I18n.t("jobseekers.job_applications.status_timestamps.submitted")).first.text)
       .to include(format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))
 
     expect(page).not_to have_content(I18n.t("jobseekers.job_applications.show.shortlist_alert.title"))
@@ -99,17 +99,39 @@ RSpec.describe "Jobseekers can view a job application" do
   context "when job application status is shortlisted" do
     let(:job_application) { create(:job_application, :status_shortlisted, jobseeker: jobseeker, vacancy: vacancy) }
 
-    it "displays what happens next notification" do
+    it "displays what happens next notification, status and shortlisted date" do
       expect(page).to have_content(I18n.t("jobseekers.job_applications.show.shortlist_alert.title"))
+
+      expect(show_page.banner.status.text).to eq("shortlisted")
+
+      expect(show_page.timeline).not_to have_dates(text: I18n.t("jobseekers.job_applications.status_timestamps.unsuccessful"))
+      expect(show_page.timeline).to have_dates(text: I18n.t("jobseekers.job_applications.status_timestamps.shortlisted"))
+      expect(show_page.timeline).to have_dates(text: I18n.t("jobseekers.job_applications.status_timestamps.submitted"))
+
+      expect(show_page.timeline.dates(text: I18n.t("jobseekers.job_applications.status_timestamps.shortlisted")).first.text)
+        .to include(format_date(job_application.shortlisted_at.to_date))
+      expect(show_page.timeline.dates(text: I18n.t("jobseekers.job_applications.status_timestamps.submitted")).first.text)
+        .to include(format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))
     end
   end
 
   context "when job application status is unsuccessful" do
     let(:job_application) { create(:job_application, :status_unsuccessful, jobseeker: jobseeker, vacancy: vacancy) }
 
-    it "displays feedback" do
+    it "displays feedback, status and unsuccessful date" do
       expect(page).to have_content(I18n.t("jobseekers.job_applications.show.feedback"))
       expect(page).to have_content(job_application.application_data["rejection_reasons"])
+
+      expect(show_page.banner.status.text).to eq("unsuccessful")
+
+      expect(show_page.timeline).to have_dates(text: I18n.t("jobseekers.job_applications.status_timestamps.unsuccessful"))
+      expect(show_page.timeline).not_to have_dates(text: I18n.t("jobseekers.job_applications.status_timestamps.shortlisted"))
+      expect(show_page.timeline).to have_dates(text: I18n.t("jobseekers.job_applications.status_timestamps.submitted"))
+
+      expect(show_page.timeline.dates(text: I18n.t("jobseekers.job_applications.status_timestamps.unsuccessful")).first.text)
+        .to include(format_date(job_application.unsuccessful_at.to_date))
+      expect(show_page.timeline.dates(text: I18n.t("jobseekers.job_applications.status_timestamps.submitted")).first.text)
+        .to include(format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))
     end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_114119) do
+ActiveRecord::Schema.define(version: 2021_03_12_122215) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "citext"
@@ -103,6 +103,10 @@ ActiveRecord::Schema.define(version: 2021_03_02_114119) do
     t.jsonb "application_data"
     t.integer "completed_steps", array: true
     t.datetime "submitted_at"
+    t.datetime "draft_at"
+    t.datetime "shortlisted_at"
+    t.datetime "unsuccessful_at"
+    t.datetime "withdrawn_at"
   end
 
   create_table "jobseekers", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|

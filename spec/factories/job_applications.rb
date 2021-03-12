@@ -41,6 +41,14 @@ JOB_APPLICATION_DATA = {
 
 FactoryBot.define do
   factory :job_application do
+    transient do
+      draft_at { 2.weeks.ago }
+      shortlisted_at { 2.days.ago }
+      submitted_at { 3.days.ago }
+      unsuccessful_at { 1.day.ago }
+      withdrawn_at { 1.week.ago }
+    end
+
     status { :draft }
     jobseeker
     vacancy
@@ -48,12 +56,20 @@ FactoryBot.define do
     application_data { JOB_APPLICATION_DATA }
     completed_steps { JobApplication.completed_steps.keys }
 
-    after :create do |job_application|
+    after :create do |job_application, options|
       unless job_application.draft?
         # TODO: education
         create_list :job_application_detail, 3, :employment_history, job_application: job_application
         create_list :job_application_detail, 2, :reference, job_application: job_application
       end
+
+      job_application.update_columns(
+        draft_at: options.draft_at,
+        shortlisted_at: options.shortlisted_at,
+        submitted_at: options.submitted_at,
+        unsuccessful_at: options.unsuccessful_at,
+        withdrawn_at: options.withdrawn_at,
+      )
     end
   end
 
@@ -65,21 +81,17 @@ FactoryBot.define do
 
   trait :status_shortlisted do
     status { :shortlisted }
-    submitted_at { 1.day.ago }
   end
 
   trait :status_submitted do
     status { :submitted }
-    submitted_at { 1.day.ago }
   end
 
   trait :status_unsuccessful do
     status { :unsuccessful }
-    submitted_at { 1.day.ago }
   end
 
   trait :status_withdrawn do
     status { :withdrawn }
-    submitted_at { 1.day.ago }
   end
 end
