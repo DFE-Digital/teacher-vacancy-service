@@ -18,7 +18,7 @@
                 = tag.div(location(draft_application.vacancy.parent_organisation, job_location: draft_application.vacancy.job_location))
 
               - card.body do
-                = govuk_tag(text: draft_application.status, colour: "pink", classes: "govuk-!-margin-bottom-2")
+                = job_application_status_tag(draft_application.status)
                 = tag.div(card.labelled_item(t(".last_edited"), format_date(draft_application.updated_at.to_date) + I18n.t("jobs.time_at") + format_time(draft_application.updated_at)))
                 = tag.div(card.labelled_item(t(".closing_date"), OrganisationVacancyPresenter.new(draft_application.vacancy).application_deadline))
 
@@ -26,14 +26,14 @@
                 = tag.div(govuk_link_to(t(".continue_application"), jobseekers_job_application_review_path(draft_application)))
                 = tag.div(govuk_link_to(t("buttons.delete"), jobseekers_job_application_confirm_destroy_path(draft_application)))
 
-          - current_jobseeker.job_applications.includes(:vacancy).order(submitted_at: :desc).submitted.each do |submitted_application|
+          - current_jobseeker.job_applications.includes(:vacancy).order(submitted_at: :desc).not_draft.each do |submitted_application|
             = render Shared::CardComponent.new do |card|
               - card.header do
                 = tag.div(govuk_link_to(submitted_application.vacancy.job_title, job_path(submitted_application.vacancy), class: "govuk-link--no-visited-state"))
                 = tag.div(location(submitted_application.vacancy.parent_organisation, job_location: submitted_application.vacancy.job_location))
 
               - card.body do
-                = govuk_tag(text: submitted_application.status, colour: "blue", classes: "govuk-!-margin-bottom-2")
+                = job_application_status_tag(submitted_application.status)
                 = tag.div(card.labelled_item(t(".submitted"), format_date(submitted_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(submitted_application.submitted_at)))
                 = tag.div(card.labelled_item(t(".closing_date"), OrganisationVacancyPresenter.new(submitted_application.vacancy).application_deadline))
 
