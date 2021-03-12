@@ -16,4 +16,32 @@ RSpec.describe "Publishers can view a job application" do
     # TODO: Complete this spec
     expect(page).to have_content("TV12345 - #{job_application.application_data['first_name']} #{job_application.application_data['last_name']}")
   end
+
+  context "when the job application status is rejected" do
+    let(:job_application) { create(:job_application, :status_rejected, vacancy: vacancy) }
+
+    it "shows the correct calls to action" do
+      expect(page).not_to have_css("a", class: "govuk-button", text: I18n.t("buttons.shortlist"))
+      expect(page).not_to have_css("a", class: "govuk-button--warning", text: I18n.t("buttons.reject"))
+      expect(page).to have_css("a", class: "govuk-button--secondary", text: I18n.t("buttons.download_application"))
+    end
+  end
+
+  context "when the job application status is shortlisted" do
+    let(:job_application) { create(:job_application, :status_shortlisted, vacancy: vacancy) }
+
+    it "shows the correct calls to action" do
+      expect(page).not_to have_css("a", class: "govuk-button", text: I18n.t("buttons.shortlist"))
+      expect(page).to have_css("a", class: "govuk-button--warning", text: I18n.t("buttons.reject"))
+      expect(page).to have_css("a", class: "govuk-button--secondary", text: I18n.t("buttons.download_application"))
+    end
+  end
+
+  context "when the job application status is submitted" do
+    it "shows the correct calls to action" do
+      expect(page).to have_css("a", class: "govuk-button", text: I18n.t("buttons.shortlist"))
+      expect(page).to have_css("a", class: "govuk-button--warning", text: I18n.t("buttons.reject"))
+      expect(page).to have_css("a", class: "govuk-button--secondary", text: I18n.t("buttons.download_application"))
+    end
+  end
 end

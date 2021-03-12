@@ -11,6 +11,7 @@
           = t("jobseekers.job_applications.heading_component.caption",
               job_title: vacancy.job_title, organisation_name: vacancy.parent_organisation_name)
         h2.govuk-heading-xl class="govuk-!-margin-bottom-5"
+          // TODO: Implement reference numbers
           = "TV12345 - #{job_application.application_data['first_name']} #{job_application.application_data['last_name']}"
 
         div
@@ -19,8 +20,12 @@
 
 .govuk-grid-row
   .govuk-grid-column-two-thirds
-    = govuk_link_to t("buttons.shortlist"), "#", button: true, class: "govuk-!-margin-right-3"
-    = govuk_link_to t("buttons.reject"), "#", button: true, class: "govuk-button--warning govuk-!-margin-right-3"
+    - if job_application.submitted?
+      = govuk_link_to t("buttons.shortlist"), organisation_job_job_application_shortlist_path(vacancy.id, job_application.id), button: true, class: "govuk-!-margin-right-3"
+
+    - if job_application.submitted? || job_application.shortlisted?
+      = govuk_link_to t("buttons.reject"), organisation_job_job_application_reject_path(vacancy.id, job_application.id), button: true, class: "govuk-button--warning govuk-!-margin-right-3"
+
     = govuk_link_to t("buttons.download_application"), "#", button: true, class: "govuk-button--secondary"
 
   .govuk-grid-column-one-third
