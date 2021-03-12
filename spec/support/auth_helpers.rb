@@ -1,13 +1,6 @@
 module AuthHelpers
-  def stub_publishers_auth(urn: nil, uid: nil, la_code: "123", oid: "oid", email: nil)
-    if urn.present?
-      page.set_rack_session(organisation_urn: urn, organisation_uid: "", organisation_la_code: "")
-    elsif uid.present?
-      page.set_rack_session(organisation_urn: "", organisation_uid: uid, organisation_la_code: "")
-    else
-      page.set_rack_session(organisation_urn: "", organisation_uid: "", organisation_la_code: la_code)
-    end
-    publisher = create(:publisher, oid: oid, email: email, last_activity_at: Time.current)
+  def login_publisher(publisher:, organisation:)
+    page.set_rack_session(publisher_organisation_id: organisation.id)
     login_as(publisher, scope: :publisher)
   end
 

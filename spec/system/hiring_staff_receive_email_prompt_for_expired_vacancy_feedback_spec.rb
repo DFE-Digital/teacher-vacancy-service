@@ -2,28 +2,25 @@ require "rails_helper"
 RSpec.describe "Creating a vacancy" do
   include ActiveJob::TestHelper
 
+  let(:publisher) { create(:publisher, email: "test@mail.com") }
   let(:school) { create(:school) }
-  let(:oid) { SecureRandom.uuid }
 
-  before(:each) do
+  before do
     ActionMailer::Base.deliveries.clear
-    stub_publishers_auth(urn: school.urn, oid: oid, email: "test@mail.com")
+    login_publisher(publisher: publisher, organisation: school)
   end
 
-  after(:each) do
-    travel_back
-  end
+  after { travel_back }
 
   context "Hiring staff has expired vacancy that is not older than 2 weeks" do
     scenario "does not receive feedback prompt e-mail" do
-      current_publisher = Publisher.find_by(oid: oid)
       vacancy = create(
         :vacancy,
         :published,
         job_title: "Vacancy",
         publish_on: Date.current,
         expires_on: Date.current + 1.week,
-        publisher_id: current_publisher.id,
+        publisher_id: publisher.id,
       )
       vacancy.organisation_vacancies.create(organisation: school)
 
@@ -39,14 +36,13 @@ RSpec.describe "Creating a vacancy" do
 
   context "Hiring staff has 2 expired vacancies that are older than 2 weeks" do
     scenario "receives feedback prompt email with 2 vacancies" do
-      current_publisher = Publisher.find_by(oid: oid)
       vacancy = create(
         :vacancy,
         :published,
         job_title: "Job one",
         publish_on: Date.current,
         expires_on: Date.current,
-        publisher_id: current_publisher.id,
+        publisher_id: publisher.id,
       )
       vacancy.organisation_vacancies.create(organisation: school)
 
@@ -56,7 +52,7 @@ RSpec.describe "Creating a vacancy" do
         job_title: "Job two",
         publish_on: Date.current,
         expires_on: Date.current,
-        publisher_id: current_publisher.id,
+        publisher_id: publisher.id,
       )
       vacancy.organisation_vacancies.create(organisation: school)
 
@@ -66,7 +62,7 @@ RSpec.describe "Creating a vacancy" do
         job_title: "Job three",
         publish_on: Date.current,
         expires_on: Date.current + 2.weeks,
-        publisher_id: current_publisher.id,
+        publisher_id: publisher.id,
       )
       vacancy.organisation_vacancies.create(organisation: school)
 
@@ -86,7 +82,6 @@ RSpec.describe "Creating a vacancy" do
 
   context "Two expired vacancies for two users that are older than 2 weeks" do
     scenario "both receives feedback prompt emails" do
-      current_publisher = Publisher.find_by(oid: oid)
       another_user = create(:publisher, email: "another@user.com")
       vacancy = create(
         :vacancy,
@@ -94,7 +89,7 @@ RSpec.describe "Creating a vacancy" do
         job_title: "Job one",
         publish_on: Date.current,
         expires_on: Date.current,
-        publisher_id: current_publisher.id,
+        publisher_id: publisher.id,
       )
       vacancy.organisation_vacancies.create(organisation: school)
 

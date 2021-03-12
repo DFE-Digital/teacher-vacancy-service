@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "School viewing vacancies" do
+  let(:publisher) { create(:publisher) }
   let(:school) { create(:school) }
-  before(:each) do
-    stub_publishers_auth(urn: school.urn)
-  end
+
+  before { login_publisher(publisher: publisher, organisation: school) }
 
   scenario "A school publisher sees advisory text when there are no vacancies" do
     visit organisation_path

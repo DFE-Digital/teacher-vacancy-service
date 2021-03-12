@@ -48,12 +48,11 @@ class Publishers::SignIn::Email::SessionsController < Publishers::BaseController
 
   private
 
+  def redirect_signed_in_publishers
+    redirect_to organisation_path if current_organisation.present?
+  end
+
   def end_session_and_redirect
-    flash_message = if session[:publisher_signing_out_for_inactivity]
-                      { notice: t("messages.access.publisher_signed_out_for_inactivity", duration: timeout_period_as_string) }
-                    else
-                      { success: t("messages.access.publisher_signed_out") }
-                    end
     clear_publisher_session!
     sign_out(:publisher)
     redirect_to root_path, flash_message

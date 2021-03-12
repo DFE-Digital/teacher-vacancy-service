@@ -1,6 +1,7 @@
 require "rails_helper"
 
 RSpec.describe "Copying a vacancy" do
+  let(:publisher) { create(:publisher) }
   let(:school) { create(:school) }
 
   let(:document_copy) { double("document_copy") }
@@ -13,9 +14,7 @@ RSpec.describe "Copying a vacancy" do
     allow(document_copy).to receive(:google_error).and_return(false)
   end
 
-  before(:each) do
-    stub_publishers_auth(urn: school.urn)
-  end
+  before { login_publisher(publisher: publisher, organisation: school) }
 
   describe "#cancel_copy" do
     scenario "a copy can be cancelled using the cancel copy back link" do

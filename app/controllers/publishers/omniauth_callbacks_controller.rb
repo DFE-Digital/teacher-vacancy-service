@@ -22,36 +22,6 @@ class Publishers::OmniauthCallbacksController < Devise::OmniauthCallbacksControl
 
   private
 
-  def not_authorised
-    Rails.logger.warn(not_authorised_details)
-    @identifier = identifier
-    render "user-not-authorised"
-  end
-
-  def not_authorised_details
-    if school_urn.present?
-      "Hiring staff not authorised: #{user_id} for school: #{school_urn}"
-    elsif trust_uid.present?
-      "Hiring staff not authorised: #{user_id} for trust: #{trust_uid}"
-    elsif local_authority_code.present?
-      "Hiring staff not authorised: #{user_id} for local authority: #{local_authority_code}"
-    else
-      "Hiring staff not authorised: #{user_id}"
-    end
-  end
-
-  def update_session(authorisation_permissions)
-    session.update(
-      organisation_urn: school_urn,
-      organisation_uid: trust_uid,
-      organisation_la_code: local_authority_code,
-      publisher_multiple_organisations: authorisation_permissions.many_organisations?,
-      publisher_id_token: id_token,
-    )
-    use_school_group_if_available
-    Rails.logger.info(updated_session_details)
-  end
-
   def auth_hash
     request.env["omniauth.auth"]
   end
@@ -64,25 +34,6 @@ class Publishers::OmniauthCallbacksController < Devise::OmniauthCallbacksControl
     auth_hash["info"]["email"]
   end
 
-  def school_urn
-    return "" unless publisher_category == :school
-
-    auth_hash.dig("extra", "raw_info", "organisation", "urn") || ""
-  end
-
-  def trust_uid
-    return "" unless publisher_category == :multi_academy_trust
-
-    auth_hash.dig("extra", "raw_info", "organisation", "uid") || ""
-  end
-
-  def local_authority_code
-    return "" unless publisher_category == :local_authority
-
-    # All organisations have an establishmentNumber, but we only want this for identifying LAs by.
-    auth_hash.dig("extra", "raw_info", "organisation", "establishmentNumber") || ""
-  end
-
   def publisher_category
     # In organisation['category'], DSI provides an 'id' and a 'name' attribute.
     # The mapping is documented in this table:
@@ -90,6 +41,19 @@ class Publishers::OmniauthCallbacksController < Devise::OmniauthCallbacksControl
     # I am using the id as I imagine that is more stable than the name.
     category_id = auth_hash.dig("extra", "raw_info", "organisation", "category", "id")
     PUBLISHER_CATEGORIES[category_id]
+  end
+
+  def school_urn
+    auth_hash.dig("extra", "raw_info", "organisation", "urn")
+  end
+
+  def trust_uid
+    auth_hash.dig("extra", "raw_info", "organisation", "uid")
+  end
+
+  def local_authority_code
+    # All organisations have an establishmentNumber, but we only want this for identifying LAs by.
+    auth_hash.dig("extra", "raw_info", "organisation", "establishmentNumber")
   end
 
   def organisation_id
@@ -108,15 +72,35 @@ class Publishers::OmniauthCallbacksController < Devise::OmniauthCallbacksControl
 
   def check_authorisation(authorisation_permissions)
     if authorisation_permissions.authorised? && organisation_id_present? && allowed_user?
-      publisher = Publisher.find_or_create_by(oid: user_id)
-      sign_in(publisher)
-      sign_out(:jobseeker)
-      update_session(authorisation_permissions)
-      trigger_sign_in_event(:success, :dsi)
+      sign_in_publisher
+      trigger_sign_in_event(:success, :dsi, user_id)
       redirect_to organisation_path
     else
       trigger_sign_in_event(:failure, :dsi, user_id)
-      not_authorised
+      @identifier = identifier
+      render "not_authorised"
+    end
+  end
+
+  def sign_in_publisher
+    publisher = Publisher.find_or_create_by(oid: user_id)
+    organisation = organisation_from_request
+    OrganisationPublisher.find_or_create_by(organisation_id: organisation.id, publisher_id: publisher.id)
+
+    sign_in(publisher)
+    sign_out(:jobseeker)
+    session.update(publisher_dsi_token: id_token, publisher_organisation_id: organisation.id)
+    use_school_group_if_available
+  end
+
+  def organisation_from_request
+    case publisher_category
+    when :school
+      School.find_by!(urn: school_urn)
+    when :local_authority
+      SchoolGroup.find_by!(local_authority_code: local_authority_code)
+    when :multi_academy_trust
+      SchoolGroup.find_by!(uid: trust_uid)
     end
   end
 
@@ -139,27 +123,16 @@ class Publishers::OmniauthCallbacksController < Devise::OmniauthCallbacksControl
   end
 
   def use_school_group_if_available
-    user = Publisher.find_by(email: identifier)
-    user_trusts = user&.dsi_data&.fetch("trust_uids", [])
-    user_local_authorities = user&.dsi_data&.fetch("la_codes", [])
-    return unless user_trusts&.any? || user_local_authorities&.any?
+    publisher = Publisher.find_by(email: identifier)
+    publisher_trusts = publisher&.dsi_data&.fetch("trust_uids", [])
+    publisher_local_authorities = publisher&.dsi_data&.fetch("la_codes", [])
+    return unless publisher_trusts&.any? || publisher_local_authorities&.any?
 
     school = School.find_by(urn: school_urn)
     school_group = school&.school_groups&.first
     return unless school_group
 
-    session.update(organisation_urn: "", organisation_uid: school_group.uid) if user_trusts.include?(school_group.uid)
-    session.update(organisation_urn: "", organisation_la_code: school_group.local_authority_code) if user_local_authorities.include?(school_group.local_authority_code)
-  end
-
-  def updated_session_details
-    if session[:organisation_urn].present?
-      "Updated session with URN #{session[:organisation_urn]}"
-    elsif session[:organisation_uid].present?
-      "Updated session with UID #{session[:organisation_uid]}"
-    elsif session[:organisation_la_code].present?
-      "Updated session with LA_CODE #{session[:organisation_la_code]}"
-    end
+    session.update(publisher_organisation_id: school_group.id) if publisher_trusts.include?(school_group.uid) || publisher_local_authorities.include?(school_group.local_authority_code)
   end
 
   def trigger_sign_in_event(success_or_failure, sign_in_type, publisher_oid = nil)

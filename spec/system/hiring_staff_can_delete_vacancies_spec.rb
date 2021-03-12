@@ -1,12 +1,12 @@
 require "rails_helper"
 RSpec.describe "School deleting vacancies" do
+  let(:publisher) { create(:publisher) }
   let(:school) { create(:school) }
   let(:vacancy) { create(:vacancy) }
-  let(:oid) { SecureRandom.uuid }
 
   before do
+    login_publisher(publisher: publisher, organisation: school)
     vacancy.organisation_vacancies.create(organisation: school)
-    stub_publishers_auth(urn: school.urn, oid: oid)
     stub_document_deletion_of_vacancy
   end
 

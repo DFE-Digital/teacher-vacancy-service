@@ -1,15 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "Creating a vacancy" do
-  let(:school) { create(:school) }
-  let(:oid) { SecureRandom.uuid }
+  let(:publisher) { create(:publisher) }
+  let(:school) { create(:school, name: "Salisbury School") }
 
-  before(:each) { stub_publishers_auth(urn: school.urn, oid: oid) }
+  before { login_publisher(publisher: publisher, organisation: school) }
 
   scenario "Visiting the school page" do
-    school = create(:school, name: "Salisbury School")
-    stub_publishers_auth(urn: school.urn)
-
     visit organisation_path
 
     expect(page).to have_content("Salisbury School")

@@ -18,7 +18,7 @@ RSpec.describe "School viewing public listings" do
   let!(:school) { create(:school, urn: "110627") }
 
   context "when signed in with DfE Sign In" do
-    before(:each) do
+    before do
       stub_accepted_terms_and_conditions
       stub_authentication_step(school_urn: "110627")
       stub_authorisation_step

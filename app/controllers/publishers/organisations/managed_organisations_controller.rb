@@ -30,7 +30,7 @@ class Publishers::Organisations::ManagedOrganisationsController < Publishers::Ba
   end
 
   def vacancy_filter
-    @vacancy_filter ||= Publishers::VacancyFilter.new(current_publisher, current_school_group)
+    @vacancy_filter ||= Publishers::VacancyFilter.new(current_publisher, current_organisation)
   end
 
   def set_organisation_options
@@ -45,5 +45,9 @@ class Publishers::Organisations::ManagedOrganisationsController < Publishers::Ba
                        name: t("publishers.organisations.managed_organisations.show.options.school_group"),
                        address: full_address(current_organisation) }),
     )
+  end
+
+  def verify_school_group
+    redirect_to organisation_path, danger: "You are not allowed" unless current_organisation.is_a?(SchoolGroup)
   end
 end

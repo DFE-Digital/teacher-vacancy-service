@@ -1,14 +1,14 @@
 require "rails_helper"
 
 RSpec.describe "Publishers can view a job application" do
+  let(:publisher) { create(:publisher) }
   let(:organisation) { create(:school) }
   let(:vacancy) { create(:vacancy, :expired, organisation_vacancies_attributes: [{ organisation: organisation }]) }
   let(:job_application) { create(:job_application, :status_submitted, vacancy: vacancy) }
-  let(:oid) { SecureRandom.uuid }
 
   before do
+    login_publisher(publisher: publisher, organisation: organisation)
     allow(JobseekerApplicationsFeature).to receive(:enabled?).and_return(true)
-    stub_publishers_auth(urn: organisation.urn, oid: oid)
     visit organisation_job_job_application_path(vacancy.id, job_application.id)
   end
 

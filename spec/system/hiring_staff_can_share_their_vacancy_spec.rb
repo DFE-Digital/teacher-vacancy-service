@@ -1,10 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Hiring staff can share their vacancy" do
+  let(:publisher) { create(:publisher) }
   let(:school) { create(:school) }
-  before(:each) do
-    stub_publishers_auth(urn: school.urn)
-  end
+
+  before { login_publisher(publisher: publisher, organisation: school) }
 
   scenario "A school can visit their page as the jobseeker would" do
     vacancy = create(:vacancy)

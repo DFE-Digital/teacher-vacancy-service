@@ -6,7 +6,7 @@ class Publishers::OrganisationsController < Publishers::BaseController
     @organisation = current_organisation
     @selected_type = params[:type]
 
-    @filters = Publishers::VacancyFilter.new(current_publisher, current_school_group).to_h
+    @filters = Publishers::VacancyFilter.new(current_publisher, current_organisation).to_h
     @managed_organisations_form = Publishers::ManagedOrganisationsForm.new(@filters)
 
     @sort = Publishers::VacancySort.new(@organisation, @selected_type).update(column: params[:sort_column])
@@ -19,6 +19,12 @@ class Publishers::OrganisationsController < Publishers::BaseController
   end
 
   private
+
+  def current_publisher_preferences
+    return unless current_organisation.is_a?(SchoolGroup)
+
+    PublisherPreference.find_by(publisher_id: current_publisher.id, school_group_id: current_organisation.id)
+  end
 
   def redirect_to_user_preferences
     return unless current_organisation.is_a?(SchoolGroup) && current_publisher_preferences.nil?

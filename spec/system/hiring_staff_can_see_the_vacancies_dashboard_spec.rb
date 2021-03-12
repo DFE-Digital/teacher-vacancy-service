@@ -1,10 +1,12 @@
 require "rails_helper"
 
 RSpec.describe "Hiring staff can see the vacancies dashboard" do
+  let(:publisher) { create(:publisher) }
+
   scenario "school with geolocation" do
     school = create(:school, northing: "1", easting: "2")
 
-    stub_publishers_auth(urn: school.urn)
+    login_publisher(publisher: publisher, organisation: school)
     vacancy = create(:vacancy, status: "published")
     vacancy.organisation_vacancies.create(organisation: school)
 
@@ -20,7 +22,7 @@ RSpec.describe "Hiring staff can see the vacancies dashboard" do
     scenario "hiring staff see a message informing them they have no jobs" do
       school = create(:school)
 
-      stub_publishers_auth(urn: school.urn)
+      login_publisher(publisher: publisher, organisation: school)
       visit organisation_path
 
       expect(page).to have_content(I18n.t("publishers.no_vacancies_component.heading"))
@@ -44,7 +46,7 @@ RSpec.describe "Hiring staff can see the vacancies dashboard" do
       draft_vacancy.organisation_vacancies.create(organisation: school)
       pending_vacancy.organisation_vacancies.create(organisation: school)
       expired_vacancy.organisation_vacancies.create(organisation: school)
-      stub_publishers_auth(urn: school.urn)
+      login_publisher(publisher: publisher, organisation: school)
     end
 
     scenario "jobs are split into sections" do

@@ -70,9 +70,7 @@ RSpec.describe "Users can only be signed in to one type of account" do
   end
 
   context "when a publisher is signed in" do
-    before do
-      stub_publishers_auth(urn: "110627")
-    end
+    before { login_publisher(publisher: publisher, organisation: school) }
 
     context "when email fallback is disabled" do
       it "signs out from the publisher account when signing in as a jobseeker" do

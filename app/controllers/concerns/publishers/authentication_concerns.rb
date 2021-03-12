@@ -3,39 +3,15 @@ module Publishers::AuthenticationConcerns
 
   included do
     helper_method :current_organisation
-    helper_method :current_school
-    helper_method :current_school_group
-    helper_method :current_publisher_is_part_of_school_group?
-  end
-
-  def sign_out_publisher!
-    %i[
-      organisation_la_code
-      organisation_uid
-      organisation_urn
-      publisher_id_token
-      publisher_multiple_organisations
-    ].each { |key| session.delete(key) }
-    sign_out(:publisher)
   end
 
   def current_organisation
-    current_school || current_school_group
+    @current_organisation ||= Organisation.find(session[:publisher_organisation_id])
   end
 
-  def current_school
-    @current_school ||= School.find_by!(urn: session[:organisation_urn]) if session[:organisation_urn].present?
-  end
-
-  def current_school_group
-    if session[:organisation_uid].present?
-      @current_school_group ||= SchoolGroup.find_by!(uid: session[:organisation_uid])
-    elsif session[:organisation_la_code].present?
-      @current_school_group ||= SchoolGroup.find_by!(local_authority_code: session[:organisation_la_code])
-    end
-  end
-
-  def current_publisher_is_part_of_school_group?
-    session[:organisation_uid].present? || session[:organisation_la_code].present?
+  def sign_out_publisher!
+    session.delete(:publisher_organisation_id)
+    session.delete(:publisher_dsi_token)
+    sign_out(:publisher)
   end
 end

@@ -3,7 +3,7 @@ nav
     - if publisher_signed_in?
       li class=active_link_class(organisation_path)
         = link_to t("nav.school_page_link"), organisation_path, class: "govuk-header__link"
-      - if current_publisher_is_part_of_school_group?
+      - if current_organisation.is_a?(SchoolGroup)
         li class=active_link_class(organisation_schools_path)
           = link_to t("nav.school_group_index_link", organisation_type: organisation_type_basic(current_organisation)), organisation_schools_path, class: "govuk-header__link"
       li class=active_link_class(root_path)

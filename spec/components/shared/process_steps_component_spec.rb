@@ -4,7 +4,7 @@ RSpec.describe Shared::ProcessStepsComponent, type: :component do
   let(:vacancy) { create(:vacancy, completed_step: completed_step) }
   let(:completed_step) { 0 }
   let(:current_step_number) { 1 }
-  let(:current_publisher_is_part_of_school_group?) { true }
+  let(:current_organisation) { build(:school_group) }
   let(:process_title) { "Process title" }
   let(:steps) do
     {
@@ -21,10 +21,10 @@ RSpec.describe Shared::ProcessStepsComponent, type: :component do
     }.freeze
   end
 
-  let(:steps_adjust) { current_publisher_is_part_of_school_group? ? 0 : 1 }
+  let(:steps_adjust) { current_organisation.is_a?(SchoolGroup) ? 0 : 1 }
 
   before do
-    allow_any_instance_of(Publishers::AuthenticationConcerns).to receive(:current_publisher_is_part_of_school_group?).and_return(current_publisher_is_part_of_school_group?)
+    allow_any_instance_of(Publishers::AuthenticationConcerns).to receive(:current_organisation).and_return(current_organisation)
   end
 
   let!(:inline_component) { render_inline(described_class.new(process: vacancy, service: ProcessSteps.new({ steps: steps, adjust: steps_adjust, step: :job_location }), title: process_title)) }
@@ -62,7 +62,7 @@ RSpec.describe Shared::ProcessStepsComponent, type: :component do
   end
 
   context "when a School user creates a job" do
-    let(:current_publisher_is_part_of_school_group?) { false }
+    let(:current_organisation) { build(:school) }
     let!(:inline_component) { render_inline(described_class.new(process: vacancy, service: ProcessSteps.new({ steps: steps, adjust: steps_adjust, step: :job_location }), title: process_title)) }
 
     it "does not render the job location step" do

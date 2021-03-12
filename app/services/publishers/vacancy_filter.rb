@@ -1,7 +1,8 @@
 class Publishers::VacancyFilter
   attr_reader :managed_school_ids, :managed_organisations
 
-  def initialize(publisher, school_group)
+  def initialize(publisher, organisation)
+    school_group = (organisation if organisation.is_a?(SchoolGroup))
     @publisher_preference = PublisherPreference.find_or_initialize_by(publisher: publisher, school_group: school_group)
     @managed_school_ids = @publisher_preference.managed_school_ids
     @managed_organisations = @publisher_preference.managed_organisations

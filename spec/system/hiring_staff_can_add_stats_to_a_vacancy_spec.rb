@@ -5,9 +5,10 @@ RSpec.describe "Submitting effectiveness feedback on expired vacancies", js: tru
   let(:job_title_link_selector) { ".view-vacancy-link" }
 
   let(:school) { create(:school) }
+  let(:publisher) { create(:publisher) }
 
-  before(:each) do
-    stub_publishers_auth(urn: school.urn)
+  before do
+    login_publisher(publisher: publisher, organisation: school)
     vacancy = create(:vacancy, :published_slugged)
     vacancy.organisation_vacancies.create(organisation: school)
   end
@@ -17,7 +18,7 @@ RSpec.describe "Submitting effectiveness feedback on expired vacancies", js: tru
     let!(:another_vacancy) { create(:vacancy, :expired) }
     let!(:third_vacancy) { create(:vacancy, :expired) }
 
-    before(:each) do
+    before do
       vacancy.organisation_vacancies.create(organisation: school)
       another_vacancy.organisation_vacancies.create(organisation: school)
       third_vacancy.organisation_vacancies.create(organisation: school)

@@ -1,12 +1,10 @@
 require "rails_helper"
 
 RSpec.describe "Editing a School’s details" do
+  let(:publisher) { create(:publisher) }
   let(:school) { create(:school) }
-  let(:oid) { SecureRandom.uuid }
 
-  before do
-    stub_publishers_auth(urn: school.urn, oid: oid)
-  end
+  before { login_publisher(publisher: publisher, organisation: school) }
 
   scenario "it allows school users to edit the school details" do
     visit organisation_path

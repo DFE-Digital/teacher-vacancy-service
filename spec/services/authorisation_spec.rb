@@ -19,14 +19,12 @@ RSpec.describe Authorisation do
       )
     end
 
-    before(:each) do
+    before do
       stub_authorisation_step
       travel_to stubbed_time
     end
 
-    after(:each) do
-      travel_back
-    end
+    after { travel_back }
 
     it "stores the role_ids" do
       result = subject.call
@@ -77,9 +75,7 @@ RSpec.describe Authorisation do
     end
 
     context "when the external response status is 500" do
-      before(:each) do
-        stub_authorisation_step_with_external_error
-      end
+      before { stub_authorisation_step_with_external_error }
 
       it "raises an external server error" do
         expect { subject.call }.to raise_error(Authorisation::ExternalServerError)

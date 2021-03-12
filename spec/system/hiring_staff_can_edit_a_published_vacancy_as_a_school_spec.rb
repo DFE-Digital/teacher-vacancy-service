@@ -1,11 +1,11 @@
 require "rails_helper"
 RSpec.describe "Hiring staff can edit a vacancy" do
+  let(:publisher) { create(:publisher) }
   let(:school) { create(:school) }
-  let(:oid) { SecureRandom.uuid }
 
-  before(:each) do
+  before do
+    login_publisher(publisher: publisher, organisation: school)
     vacancy.organisation_vacancies.create(organisation: school)
-    stub_publishers_auth(urn: school.urn, oid: oid)
   end
 
   context "when attempting to edit a draft vacancy" do

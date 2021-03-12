@@ -1,17 +1,17 @@
 require "rails_helper"
 
 RSpec.describe "Editing a draft vacancy" do
+  let(:publisher) { create(:publisher) }
   let(:school_group) { create(:trust) }
   let(:school1) { create(:school, name: "First school") }
   let(:school2) { create(:school, name: "Second school") }
-  let(:oid) { SecureRandom.uuid }
   let(:vacancy) { create(:vacancy, :central_office, :draft) }
 
   before do
+    login_publisher(publisher: publisher, organisation: school_group)
     vacancy.organisation_vacancies.create(organisation: school_group)
     SchoolGroupMembership.find_or_create_by(school_id: school1.id, school_group_id: school_group.id)
     SchoolGroupMembership.find_or_create_by(school_id: school2.id, school_group_id: school_group.id)
-    stub_publishers_auth(uid: school_group.uid, oid: oid)
   end
 
   describe "#job_location" do
