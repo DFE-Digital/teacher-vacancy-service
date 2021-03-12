@@ -4,7 +4,7 @@ RSpec.describe "Jobseekers can review a job application" do
   let(:jobseeker) { create(:jobseeker) }
   let(:vacancy) { create(:vacancy, organisation_vacancies_attributes: [{ organisation: organisation }]) }
   let(:organisation) { create(:school) }
-  let(:job_application) { create(:job_application, :complete, jobseeker: jobseeker, vacancy: vacancy) }
+  let(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
 
   let(:review_page) { PageObjects::Jobseekers::JobApplications::Review.new }
 

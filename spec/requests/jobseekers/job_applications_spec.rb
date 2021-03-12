@@ -16,7 +16,7 @@ RSpec.describe "Job applications", type: :request do
         .and_data(vacancy_id: vacancy.id)
     end
 
-    context "when an job application for the job already exists" do
+    context "when a job application for the job already exists" do
       let!(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
 
       it "redirects to `jobseekers_job_applications_path`" do
@@ -26,7 +26,7 @@ RSpec.describe "Job applications", type: :request do
   end
 
   describe "POST #create" do
-    context "when an job application for the job already exists" do
+    context "when a job application for the job already exists" do
       let!(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
 
       it "redirects to `jobseekers_job_applications_path`" do
@@ -45,7 +45,7 @@ RSpec.describe "Job applications", type: :request do
     end
 
     context "when the application is not a draft" do
-      let!(:job_application) { create(:job_application, status: :submitted, jobseeker: jobseeker, vacancy: vacancy) }
+      let!(:job_application) { create(:job_application, :status_submitted, jobseeker: jobseeker, vacancy: vacancy) }
 
       it "raises an error" do
         expect { get(jobseekers_job_application_confirm_destroy_path(job_application.id)) }.to raise_error(ActionController::RoutingError, /non-draft/)
@@ -67,7 +67,7 @@ RSpec.describe "Job applications", type: :request do
     end
 
     context "when the application is not a draft" do
-      let!(:job_application) { create(:job_application, status: :submitted, jobseeker: jobseeker, vacancy: vacancy) }
+      let!(:job_application) { create(:job_application, :status_submitted, jobseeker: jobseeker, vacancy: vacancy) }
 
       it "raises an error and does not delete the application" do
         expect { delete(jobseekers_job_application_path(job_application.id)) }.to raise_error(ActionController::RoutingError, /non-draft/)

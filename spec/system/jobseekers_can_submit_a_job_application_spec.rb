@@ -14,7 +14,7 @@ RSpec.describe "Jobseekers can submit a job application" do
   end
 
   context "when the application is complete" do
-    let(:job_application) { create(:job_application, :complete, jobseeker: jobseeker, vacancy: vacancy) }
+    let(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
 
     it "allows jobseekers to submit application and receive confirmation email" do
       click_on I18n.t("buttons.submit_application")
@@ -35,7 +35,7 @@ RSpec.describe "Jobseekers can submit a job application" do
   end
 
   context "when the application is incomplete" do
-    let(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
+    let(:job_application) { create(:job_application, :status_draft, jobseeker: jobseeker, vacancy: vacancy) }
 
     it "does not allow jobseekers to submit application and go to confirmation page" do
       check "Confirm data accurate"
@@ -57,7 +57,7 @@ RSpec.describe "Jobseekers can submit a job application" do
   end
 
   context "when the job listing is expired" do
-    let(:job_application) { create(:job_application, :complete, jobseeker: jobseeker, vacancy: vacancy) }
+    let(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
 
     it "does not submit and redirects to the expired page" do
       travel_to(vacancy.expires_at + 1.second) do

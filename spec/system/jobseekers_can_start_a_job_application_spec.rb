@@ -81,7 +81,7 @@ RSpec.describe "Jobseekers can start a job application" do
     context "when the jobseeker has a draft application for the job" do
       context "when clicking apply on the job page" do
         let!(:jobseeker) { create(:jobseeker) }
-        let!(:job_application) { create(:job_application, :complete, jobseeker: jobseeker, vacancy: vacancy) }
+        let!(:job_application) { create(:job_application, jobseeker: jobseeker, vacancy: vacancy) }
 
         before do
           login_as(jobseeker, scope: :jobseeker)

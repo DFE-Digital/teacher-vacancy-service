@@ -4,7 +4,7 @@ RSpec.describe "Jobseekers can save a job application" do
   let(:jobseeker) { create(:jobseeker) }
   let(:organisation) { create(:school) }
   let(:vacancy) { create(:vacancy, organisation_vacancies_attributes: [{ organisation: organisation }]) }
-  let(:job_application) { create(:job_application, vacancy: vacancy, jobseeker: jobseeker) }
+  let(:job_application) { create(:job_application, :status_draft, vacancy: vacancy, jobseeker: jobseeker) }
 
   before do
     allow(JobseekerApplicationsFeature).to receive(:enabled?).and_return(true)

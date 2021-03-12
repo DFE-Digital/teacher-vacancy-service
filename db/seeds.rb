@@ -260,7 +260,7 @@ jobseeker = Jobseeker.create(email: "jobseeker@example.com",
                              password: "password",
                              confirmed_at: Time.zone.now)
 
-FactoryBot.create(:job_application, :complete,
+FactoryBot.create(:job_application, :status_submitted,
                   id: "6683c564-15e6-41af-ab44-7adf125f4c84",
                   jobseeker: jobseeker,
                   vacancy: physics_job)
