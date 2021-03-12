@@ -12,7 +12,7 @@ class JobApplication < ApplicationRecord
     declarations: 8,
   }
 
-  enum status: { draft: 0, submitted: 1 }
+  enum status: { draft: 0, submitted: 1, shortlisted: 2, rejected: 3, withdrawn: 4 }, _default: 0
 
   belongs_to :jobseeker
   belongs_to :vacancy
