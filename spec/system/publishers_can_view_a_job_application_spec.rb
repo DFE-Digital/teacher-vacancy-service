@@ -17,8 +17,8 @@ RSpec.describe "Publishers can view a job application" do
     expect(page).to have_content("TV12345 - #{job_application.application_data['first_name']} #{job_application.application_data['last_name']}")
   end
 
-  context "when the job application status is rejected" do
-    let(:job_application) { create(:job_application, :status_rejected, vacancy: vacancy) }
+  context "when the job application status is unsuccessful" do
+    let(:job_application) { create(:job_application, :status_unsuccessful, vacancy: vacancy) }
 
     it "shows the correct calls to action" do
       expect(page).not_to have_css("a", class: "govuk-button", text: I18n.t("buttons.shortlist"))

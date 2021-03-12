@@ -79,11 +79,6 @@ en:
         search:
           intro: Search and apply for more teaching jobs on Teaching Vacancies
           link_text: Go to Teaching Vacancies
-      application_rejected:
-        <<: *job_application_mailer_shared
-        feedback: Feedback from the school
-        heading: Unfortunately your application was not successful this time
-        subject: Your job application has been rejected
       application_shortlisted:
         <<: *job_application_mailer_shared
         heading: You have been shortlisted for this role
@@ -99,6 +94,11 @@ en:
             touch to let you know.
           link_text: view your application
         subject: Your job application has been submitted
+      application_unsuccessful:
+        <<: *job_application_mailer_shared
+        feedback: Feedback from the school
+        heading: Unfortunately your application was not successful this time
+        subject: Your job application has been unsuccessful
 
     subscription_mailer:
       confirmation:

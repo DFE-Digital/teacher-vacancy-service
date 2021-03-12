@@ -1,9 +1,5 @@
 # Documentation: app/mailers/previewing_emails.md
 class Jobseekers::JobApplicationPreview < ActionMailer::Preview
-  def application_rejected
-    Jobseekers::JobApplicationMailer.application_rejected(JobApplication.find("6683c564-15e6-41af-ab44-7adf125f4c84"))
-  end
-
   def application_shortlisted
     Jobseekers::JobApplicationMailer.application_shortlisted(JobApplication.find("6683c564-15e6-41af-ab44-7adf125f4c84"))
   end
@@ -19,6 +15,10 @@ class Jobseekers::JobApplicationPreview < ActionMailer::Preview
   def application_submitted_at_one_school
     vacancy = School.first.vacancies.where(job_location: "at_one_school").sample
     application_submitted(vacancy.id)
+  end
+
+  def application_unsuccessful
+    Jobseekers::JobApplicationMailer.application_unsuccessful(JobApplication.find("6683c564-15e6-41af-ab44-7adf125f4c84"))
   end
 
   private

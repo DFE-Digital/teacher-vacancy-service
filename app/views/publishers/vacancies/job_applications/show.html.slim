@@ -7,16 +7,18 @@
         = govuk_breadcrumbs breadcrumbs: { "#{t("publishers.vacancies_component.published.tab_heading")}": jobs_with_type_organisation_path(:published),
                                            "#{vacancy.job_title}": "",
                                            "#{job_application.application_data["first_name"]} #{job_application.application_data["last_name"]}": "" }
+
         .govuk-caption-l class="govuk-!-margin-top-5"
           = t("jobseekers.job_applications.heading_component.caption",
               job_title: vacancy.job_title, organisation_name: vacancy.parent_organisation_name)
+
         h2.govuk-heading-xl class="govuk-!-margin-bottom-5"
           // TODO: Implement reference numbers
           = "TV12345 - #{job_application.application_data['first_name']} #{job_application.application_data['last_name']}"
 
         div
           span.govuk-body class="govuk-!-margin-right-5" = t(".status_heading")
-          = govuk_tag text: "review", colour: "blue"
+          = publisher_job_application_status_tag(job_application.status)
 
 .govuk-grid-row
   .govuk-grid-column-two-thirds

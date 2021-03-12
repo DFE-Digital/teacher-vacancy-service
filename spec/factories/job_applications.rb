@@ -63,11 +63,6 @@ FactoryBot.define do
     completed_steps { [] }
   end
 
-  trait :status_rejected do
-    status { :rejected }
-    submitted_at { 1.day.ago }
-  end
-
   trait :status_shortlisted do
     status { :shortlisted }
     submitted_at { 1.day.ago }
@@ -75,6 +70,16 @@ FactoryBot.define do
 
   trait :status_submitted do
     status { :submitted }
+    submitted_at { 1.day.ago }
+  end
+
+  trait :status_unsuccessful do
+    status { :unsuccessful }
+    submitted_at { 1.day.ago }
+  end
+
+  trait :status_withdrawn do
+    status { :withdrawn }
     submitted_at { 1.day.ago }
   end
 end
