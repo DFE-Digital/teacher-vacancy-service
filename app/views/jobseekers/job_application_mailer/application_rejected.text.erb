@@ -1,0 +1,15 @@
+<%= t(".intro", job_title: @vacancy.job_title, organisation_name: @organisation_name) %>
+
+# <%= t(".heading") %>
+
+<%- if @job_application.application_data["rejection_reasons"].present? %>
+  # <%= t(".feedback") %>
+  <%= @job_application.application_data["rejection_reasons"] %>
+<% end %>
+
+# <%= t(".more_info.heading") %>
+
+<%= t(".more_info.description", email: notify_mail_to(@contact_email)) %>
+
+<%= t(".search.intro") %>
+<%= notify_link(root_url, t(".search.link_text")) %>

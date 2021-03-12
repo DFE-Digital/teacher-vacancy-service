@@ -71,21 +71,33 @@ en:
         working_pattern: "Working pattern: %{working_pattern}"
 
     job_application_mailer:
-      application_submitted:
-        heading: Your application has been sent to %{organisation_name}
+      shared: &job_application_mailer_shared
         intro: Your application for %{job_title} at %{organisation_name}
         more_info:
           heading: Still have questions?
           description: If you would like more information you can contact the school at %{email}.
+        search:
+          intro: Search and apply for more teaching jobs on Teaching Vacancies
+          link_text: Go to Teaching Vacancies
+      application_rejected:
+        <<: *job_application_mailer_shared
+        feedback: Feedback from the school
+        heading: Unfortunately your application was not successful this time
+        subject: Your job application has been rejected
+      application_shortlisted:
+        <<: *job_application_mailer_shared
+        heading: You have been shortlisted for this role
+        instructions: What happens next
+        subject: Your job application has been shortlisted
+      application_submitted:
+        <<: *job_application_mailer_shared
+        heading: Your application has been sent to %{organisation_name}
         next_steps:
           heading: Next steps
           description: >-
             You can %{link} on your account. If you are shortlisted for an interview, %{organisation_name} will be in
             touch to let you know.
           link_text: view your application
-        search:
-          intro: Search and apply for more teaching jobs on Teaching Vacancies
-          link_text: Go to Teaching Vacancies
         subject: Your job application has been submitted
 
     subscription_mailer:
