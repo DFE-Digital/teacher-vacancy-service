@@ -1,20 +1,38 @@
-- content_for :page_title_prefix, t(".title")
+- content_for :page_title_prefix, t(".page_title")
 
 .jobs-banner
   .govuk-width-container
     .govuk-grid-row
       .govuk-grid-column-full
-        = render(Shared::BreadcrumbComponent.new(collapse_on_mobile: false,
-                                                 crumbs: [{ link_path: jobseekers_job_applications_path, link_text: t("breadcrumbs.job_applications") },
-                                                          { link_path: "#", link_text: vacancy.job_title }]))
+        = govuk_breadcrumbs breadcrumbs: { "#{t("breadcrumbs.job_applications")}": jobseekers_job_applications_path,
+                                           "#{vacancy.job_title}": "" }
 
         .govuk-caption-l class="govuk-!-margin-top-5" = t("jobseekers.job_applications.heading_component.heading")
 
-        h2.govuk-heading-xl class="govuk-!-margin-bottom-5" = vacancy.job_title
+        h1.govuk-heading-xl class="govuk-!-margin-bottom-5 govuk-!-margin-top-0" = vacancy.job_title
+
+        div
+          span.govuk-body class="govuk-!-margin-right-5" = t(".status_heading")
+          = job_application_status_tag(job_application.status)
 
 .govuk-grid-row
   .govuk-grid-column-two-thirds
-    h1.govuk-heading-l = t(".heading")
+
+    - if job_application.shortlisted?
+      = render Shared::NotificationComponent.new style: "notice", content: { title: t(".shortlist_alert.title"), body: t(".shortlist_alert.body", organisation: vacancy.parent_organisation_name) }, alert: "info", dismiss: false, background: true
+
+    // TODO: Complete in later ticket
+    .grey-border-box
+      h3.govuk-heading-m = t(".school_details.heading")
+      = govuk_summary_list classes: "govuk-!-margin-bottom-0" do |component|
+        - component.slot(:row, key: t(".school_details.name"), value: vacancy.parent_organisation_name)
+        - component.slot(:row, key: t(".school_details.number"), value: vacancy.contact_number)
+        - component.slot(:row, key: t(".school_details.email"), value: vacancy.contact_email)
+
+    - if job_application.unsuccessful? && job_application.application_data["rejection_reasons"]
+      .grey-border-box
+        h3.govuk-heading-m = t(".feedback")
+        p.govuk-body class="govuk-!-margin-bottom-0" = job_application.application_data["rejection_reasons"]
 
     ol.app-task-list
       li = render "jobseekers/job_applications/review/personal_details", allow_edit: false
@@ -28,7 +46,8 @@
 
   .govuk-grid-column-one-third
     .account-sidebar
-      h2.account-sidebar__heading = t(".assistance.heading")
+      h2.account-sidebar__heading = t(".timeline")
 
     = render Shared::TimelineComponent.new do |timeline|
-      - timeline.date(key: t("jobseekers.job_applications.steps.application_submitted"), value: format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))
+      - timeline.date(key: t("jobseekers.job_applications.steps.application_submitted"),
+                      value: format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))

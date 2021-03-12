@@ -192,10 +192,18 @@ en:
         heading: Review your application
         title: Review your application — Application
       show:
-        assistance:
-          heading: Timeline
-        heading: View submitted application
-        title: View submitted application
+        feedback: Feedback on your application
+        page_title: View application
+        school_details:
+          email: Contact email
+          heading: School details
+          name: School name
+          number: Telephone number
+        shortlist_alert:
+          title: What happens next with shortlisting?
+          body: "%{organisation} will be in touch soon with more information about next steps."
+        status_heading: Application status
+        timeline: Timeline
       steps:
         application_submitted: Application submitted
       submit:

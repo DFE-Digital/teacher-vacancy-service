@@ -164,3 +164,9 @@
     margin-bottom: 0;
   }
 }
+
+.grey-border-box {
+  border: 5px solid govuk-colour('mid-grey');
+  margin-bottom: govuk-spacing(5);
+  padding: govuk-spacing(5);
+}

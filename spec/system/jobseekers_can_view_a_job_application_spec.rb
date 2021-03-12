@@ -15,6 +15,16 @@ RSpec.describe "Jobseekers can view a job application" do
   end
 
   it "displays all the job application information" do
+    expect(show_page.banner.job_title.text).to eq(vacancy.job_title)
+
+    expect(show_page.banner.status.text).to eq(job_application.status)
+
+    expect(show_page.timeline.dates(text: "Application submitted").first.text)
+      .to include(format_date(job_application.submitted_at.to_date) + I18n.t("jobs.time_at") + format_time(job_application.submitted_at))
+
+    expect(page).not_to have_content(I18n.t("jobseekers.job_applications.show.shortlist_alert.title"))
+    expect(page).not_to have_content(I18n.t("jobseekers.job_applications.show.feedback"))
+
     show_page.steps(text: I18n.t("jobseekers.job_applications.build.personal_details.heading")).first.within do |personal_details|
       %w[first_name last_name previous_names phone_number teacher_reference_number national_insurance_number].each do |attribute|
         expect(personal_details.body.rows(id: "personal_details_#{attribute}").first.value.text).to eq(job_application.application_data[attribute])
@@ -83,6 +93,23 @@ RSpec.describe "Jobseekers can view a job application" do
       expect(declarations.body.rows(id: "declarations_close_relationships").first.value.text).to include(job_application.application_data["close_relationships"].capitalize)
       expect(declarations.body.rows(id: "declarations_close_relationships").first.value.text).to include(job_application.application_data["close_relationships_details"])
       expect(declarations.body.rows(id: "declarations_right_to_work_in_uk").first.value.text).to eq(job_application.application_data["right_to_work_in_uk"].capitalize)
+    end
+  end
+
+  context "when job application status is shortlisted" do
+    let(:job_application) { create(:job_application, :status_shortlisted, jobseeker: jobseeker, vacancy: vacancy) }
+
+    it "displays what happens next notification" do
+      expect(page).to have_content(I18n.t("jobseekers.job_applications.show.shortlist_alert.title"))
+    end
+  end
+
+  context "when job application status is unsuccessful" do
+    let(:job_application) { create(:job_application, :status_unsuccessful, jobseeker: jobseeker, vacancy: vacancy) }
+
+    it "displays feedback" do
+      expect(page).to have_content(I18n.t("jobseekers.job_applications.show.feedback"))
+      expect(page).to have_content(job_application.application_data["rejection_reasons"])
     end
   end
 end
